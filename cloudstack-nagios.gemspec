@@ -25,4 +25,6 @@ Gem::Specification.new do |gem|
   
   gem.add_dependency('thor', '~> 0.18.1')
   gem.add_dependency('erubis', '~> 2.7.0')
+  gem.add_dependency('sshkit', '~> 1.1.0')
+  gem.add_dependency('highline', '~> 1.6.20')
 end

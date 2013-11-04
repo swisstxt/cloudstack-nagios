@@ -80,19 +80,16 @@ module CloudstackNagios
     end
     map :envs => :environments
 
-    desc "command COMMAND [arg1=val1 arg2=val2...]", "run a custom api command"
-    def command(command, *args)
-      params = {'command' => command}
-      args.each do |arg|
-        arg = arg.split('=')
-        params[arg[0]] = arg[1] 
-      end
-      puts JSON.pretty_generate(client.send_request params)
+    # require subcommands
+    Dir[File.dirname(__FILE__) + '/commands/*.rb'].each do |command| 
+      require command
     end
 
-    require File.dirname(__FILE__) + '/commands/nagios_config.rb'
     desc "nagios_config SUBCOMMAND ...ARGS", "Nagios configuration commands"
     subcommand :nagios_config, NagiosConfig
+
+    desc "snmpd_config SUBCOMMAND ...ARGS", "snmpd configuration commands"
+    subcommand :snmpd_config, SnmpdConfig
 
   end # class
 end # module
