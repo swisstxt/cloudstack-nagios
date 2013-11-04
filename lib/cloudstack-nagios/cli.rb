@@ -3,7 +3,6 @@ require 'erubis'
 module CloudstackNagios
   class Cli < CloudstackNagios::Base
     include Thor::Actions
-    include CloudstackNagios::Helper
 
     package_name "cloudstack-nagios" 
     map %w(-v --version) => :version
@@ -26,16 +25,7 @@ module CloudstackNagios
       say "cloudstack-nagios v#{CloudstackNagios::VERSION}"
     end
 
-    desc "config", "create a nagios config for virtual routers"
-    def config
-      routers = client.list_routers
-      projects = client.list_projects
-      projects.each do |project|
-        routers = routers + client.list_routers({projectid: project['id']})
-      end
-      puts template("cloudstack_routers_hosts.cfg.erb").result(routers: routers)
-      puts template("cloudstack_routers_services.cfg.erb").result(routers: routers)
-    end
+    
 
     desc "setup", "initial setup of the Cloudstack connection"
     option :url
@@ -101,6 +91,10 @@ module CloudstackNagios
       end
       puts JSON.pretty_generate(client.send_request params)
     end
-  end
 
-end
+    require File.dirname(__FILE__) + '/commands/nagios_config.rb'
+    desc "config SUBCOMMAND ...ARGS", "Nagios configuration commands"
+    subcommand :nagios_config, NagiosConfig
+
+  end # class
+end # module

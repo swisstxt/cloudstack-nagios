@@ -4,6 +4,7 @@ require "yaml"
 module CloudstackNagios 
   class Base < Thor
     include Thor::Actions
+    include CloudstackNagios::Helper
     
     attr_reader :config
 
@@ -32,7 +33,7 @@ module CloudstackNagios
       def load_configuration(config_file = options[:config], env = options[:environment])
         unless File.exists?(config_file)
           say "Configuration file #{config_file} not found.", :red
-          say "Please run \'cs setup\' to create one."
+          say "Please run \'cs-nagios setup\' to create one."
           exit 1
         end
         begin
