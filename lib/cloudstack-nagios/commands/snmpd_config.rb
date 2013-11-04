@@ -1,11 +1,26 @@
 require 'sshkit/dsl'
 require 'highline/import'
+require 'socket'
+require 'timeout'
 
 class SnmpdConfig < CloudstackNagios::Base
 
-  desc "check", "check if snpd is configured on virtual routers"
+  desc "check", "check if snmpd is configured on virtual routers"
   def check
-  	
+       hosts = routers.map {|router| router['linklocalip']}
+       on hosts, in: :sequence, wait: 5 do
+          Timeout::timeout(1) do
+               begin
+                  socket = TCPSocket.new("#{host}", "161")
+                  socket.close
+                    puts "port is open"
+                    return true
+                  rescue Errno::ECONNREFUSED, Errno::EHOSTUNREACH
+                    puts "port is closed"
+                    return false
+                  end
+               end
+       end
   end
 
   desc "enable", "enable snmpd configuration on virtual routers"
