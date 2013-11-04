@@ -1,0 +1,6 @@
+.DS_Store
+results.html
+config/cloudstack.yml
+pkg
+html
+*.gem
