@@ -25,8 +25,6 @@ module CloudstackNagios
       say "cloudstack-nagios v#{CloudstackNagios::VERSION}"
     end
 
-    
-
     desc "setup", "initial setup of the Cloudstack connection"
     option :url
     option :api_key
@@ -93,7 +91,7 @@ module CloudstackNagios
     end
 
     require File.dirname(__FILE__) + '/commands/nagios_config.rb'
-    desc "config SUBCOMMAND ...ARGS", "Nagios configuration commands"
+    desc "nagios_config SUBCOMMAND ...ARGS", "Nagios configuration commands"
     subcommand :nagios_config, NagiosConfig
 
   end # class
