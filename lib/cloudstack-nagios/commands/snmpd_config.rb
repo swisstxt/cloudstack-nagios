@@ -10,20 +10,38 @@ class SnmpdConfig < CloudstackNagios::Base
 
   desc "enable", "enable snmpd configuration on virtual routers"
   def enable
-  	hosts = routers.map {|router| router['linklocalip']}
-  	on hosts, in: :sequence, wait: 5 do
-			puts
-			puts "On host #{host}"
-			puts "____" * 20
-			puts
-  		puts output = capture(:free, '-m')
-  		puts output =~ /Mem:\s+(\d+)\s+(\d+)/
-  		puts $1
-  		puts $2
-		end
+        say 'Collecting all routers from cloudstack..', :yellow
+  	hosts = routers.map do |router|
+          unless router['linklocalip'] == ''
+            host = SSHKit::Host.new("root@#{router['linklocalip']}")
+            host.ssh_options = sshoptions
+            host.port = 3922
+          end
+          host
+        end
+        say 'connect to routers and execute commands...', :yellow
+  	on hosts[0], in: :sequence do
+          begin 
+            execute 'apt-get', 'update'
+            execute 'apt-get', '-y', 'install', 'snmpd'
+            upload! File.join(File.dirname(__FILE__), '..', 'files', 'snmpd.conf'), '/etc/snmpd.conf'
+            execute 'service', 'snmpd', 'restart'
+            execute 'iptables', '-A INPUT -p udp -m udp --dport 161 -j ACCEPT'
+          rescue 
+            say 'configuration failed!', :red
+	  end
+	end
   end
 
   no_commands do
+
+        def sshoptions
+          {
+            timeout: 5,
+            keys: %w(/var/lib/cloud/management/.ssh/id_rsa),
+            auth_methods: %w(publickey)
+          }
+        end
 
   	def snmp_hosts(host_names)
   		hosts = host_names.map do |host_name|
