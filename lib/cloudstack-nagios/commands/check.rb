@@ -40,7 +40,7 @@ class Check < CloudstackNagios::Base
     free = values[2].to_i
     free_b = values[7].to_i
     data = check_data(total, free_b, options[:warning], options[:critical])
-    puts "MEMORY #{RETURN_CODES[data[0]]} - usage = #{data[1]}% | usage=#{data[1]}% total=#{total}, free=#{free}, free_wo_buffers=#{free_b}"
+    puts "MEMORY #{RETURN_CODES[data[0]]} - usage = #{data[1]}% | usage=#{data[1]}% total=#{total}M, free=#{free}M, free_wo_buffers=#{free_b}M"
     exit data[0]
   end
 
@@ -52,11 +52,13 @@ class Check < CloudstackNagios::Base
   option :warning,
       desc: 'warning level',
       type: :numeric,
-      default: 90
+      default: 90,
+      aliases: '-w'
   option :critical,
       desc: 'critical level',
       type: :numeric,
-      default: 95
+      default: 95,
+      aliases: '-c'
   option :ssh_key,
       desc: 'ssh private key to use',
       default: '/var/lib/cloud/management/.ssh/id_rsa'
@@ -65,7 +67,7 @@ class Check < CloudstackNagios::Base
       type: :numeric,
       default: 3922,
       aliases: '-p'
-  def cpu(host)
+  def cpu
     host = SSHKit::Host.new("root@#{options[:host]}")
     host.ssh_options = sshoptions(options[:ssh_key])
     host.port = options[:port]
@@ -76,7 +78,7 @@ class Check < CloudstackNagios::Base
     values = mpstat_output.scan(/\d+/)
     usage = 100 - values[-1].to_f 
     data = check_data(100, usage, options[:warning], options[:critical])
-    puts "CPU #{RETURN_CODES[data[0]]} - usage = #{data[1]}% | usage=#{usage}"
+    puts "CPU #{RETURN_CODES[data[0]]} - usage = #{data[1]}% | usage=#{data[1]}%"
     exit data[0]
   end
 
@@ -152,17 +154,17 @@ class Check < CloudstackNagios::Base
       r2 = capture(:cat, '/sys/class/net/eth0/statistics/rx_bytes').to_f
       t2 = capture(:cat, '/sys/class/net/eth0/statistics/tx_bytes').to_f
     end
-    rbps = (r2 - r1) / 1024
-    tbps = (t2 - t1) / 1024
-    data = check_data(1048576, tbps, options[:warning], options[:critical])
-    puts "NETWORK #{RETURN_CODES[data[0]]} - usage = #{data[1]}% | rxbps=#{rbps.round(0)}, txbps=#{tbps.round(0)}"
+    rbps = (r2 - r1)
+    tbps = (t2 - t1)
+    data = check_data(1073741824, (1073741824 - rbps), options[:warning], options[:critical])
+    puts "NETWORK #{RETURN_CODES[data[0]]} - usage = #{data[1]}% | rxbps=#{rbps.round(0)}B, txbps=#{tbps.round(0)}B"
     exit data[0]
   end
 
   no_commands do
 
     def check_data(total, usage, warning, critical)
-      usage_percent = 100.0 / total * usage
+      usage_percent = 100 - 100.0 / total.to_f * usage.to_f
       code = 3
       if usage_percent < warning
         code = 0

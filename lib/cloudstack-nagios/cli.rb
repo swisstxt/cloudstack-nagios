@@ -8,8 +8,7 @@ module CloudstackNagios
     map %w(-v --version) => :version
 
     class_option :config,
-      default: File.join(Dir.home, '.cloudstack-nagios.yml'),
-      aliases: '-c',
+      default: ENV['HOME'] ? File.join(Dir.home, '.cloudstack-nagios.yml') : '',
       desc: 'location of your cloudstack-nagios configuration file'
 
     class_option :environment,
