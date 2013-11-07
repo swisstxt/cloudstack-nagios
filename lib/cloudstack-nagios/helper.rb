@@ -6,12 +6,8 @@ module CloudstackNagios
     end
 
     def routers
-    	routers = client.list_routers
-    	projects = client.list_projects
-    	projects.each do |project|
-      	routers = routers + client.list_routers({projectid: project['id']})
-    	end
-    	routers
+      routers = client.list_routers
+      routers += client.list_routers(projectid: -1)
     end
   end
 end

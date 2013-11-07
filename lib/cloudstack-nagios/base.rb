@@ -64,6 +64,15 @@ module CloudstackNagios
       def filter_by(objects, tag_name, tag)
         objects.select {|r| r[tag_name].downcase == tag.downcase}
       end
+
+      def sshoptions
+       {
+         timeout: 5,
+         keys: %w(/var/lib/cloud/management/.ssh/id_rsa),
+         auth_methods: %w(publickey)
+       }
+      end
+
     end
   end
 end

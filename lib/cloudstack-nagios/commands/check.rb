@@ -1,21 +1,26 @@
 require 'sshkit/dsl'
-require 'highline/import'
-require 'socket'
-require 'timeout'
 
 class Check < CloudstackNagios::Base
 
-  desc "memory HOST", "check memory on host"
+  RETURN_CODES = {0 => 'ok', 1 => 'warning', 2 => 'critical'}
+
+  desc "check memory HOST", "check memory on host"
+  option :host,
+      desc: 'hostname or ipaddress',
+      required: true,
+      aliases: '-H'
   option :warning,
       desc: 'warning level',
       type: :numeric,
-      default: 90
+      default: 90,
+      aliases: '-w'
   option :critical,
       desc: 'critical level',
       type: :numeric,
-      default: 95
-  def memory(host)
-    host = SSHKit::Host.new("root@#{host}")
+      default: 95,
+      aliases: '-c'
+  def memory
+    host = SSHKit::Host.new("root@#{options[:host]}")
     host.ssh_options = sshoptions
     host.port = 3922
     free_output = ""
@@ -27,11 +32,15 @@ class Check < CloudstackNagios::Base
     free = values[2].to_i
     free_b = values[7].to_i
     data = check_data(total, free_b, options[:warning], options[:critical])
-    puts "MEMORY #{return_codes[data[0]]} - usage = #{data[1]}% | total=#{total}, free=#{free}, free_wo_buffers=#{free_b}"
+    puts "MEMORY #{RETURN_CODES[data[0]]} - usage = #{data[1]}% | usage=#{data[1]}% total=#{total}, free=#{free}, free_wo_buffers=#{free_b}"
+    exit data[0]
   end
 
-
-  desc "memory HOST", "check memory on host"
+  desc "check cpu", "check memory on host"
+  option :host,
+     desc: 'hostname or ipaddress',
+     required: true,
+     aliases: '-H'
   option :warning,
       desc: 'warning level',
       type: :numeric,
@@ -41,7 +50,7 @@ class Check < CloudstackNagios::Base
       type: :numeric,
       default: 95
   def cpu(host)
-    host = SSHKit::Host.new("root@#{host}")
+    host = SSHKit::Host.new("root@#{options[:host]}")
     host.ssh_options = sshoptions
     host.port = 3922
     mpstat_output = ""
@@ -51,21 +60,56 @@ class Check < CloudstackNagios::Base
     values = mpstat_output.scan(/\d+/)
     usage = 100 - values[-1].to_f 
     data = check_data(100, usage, options[:warning], options[:critical])
-    puts "CPU #{return_codes[data[0]]} - usage = #{data[1]}% | usage=#{usage}"
+    puts "CPU #{RETURN_CODES[data[0]]} - usage = #{data[1]}% | usage=#{usage}"
+    exit data[0]
   end
 
-
-  desc "network HOST", "check network usage on host"
+  desc "check rootfs_rw", "check if the rootfs is read/writeable on host"
+  option :host,
+      desc: 'hostname or ipaddress',
+      required: true,
+      aliases: '-H'
   option :warning,
       desc: 'warning level',
       type: :numeric,
-      default: 90
+      default: 90,
+      aliases: '-w'
   option :critical,
       desc: 'critical level',
       type: :numeric,
-      default: 95
-  def network(host)
-    host = SSHKit::Host.new("root@#{host}")
+      default: 95,
+      aliases: '-c'
+  def rootfs_rw
+    host = SSHKit::Host.new("root@#{options[:host]}")
+    host.ssh_options = sshoptions
+    host.port = 3922
+    mpstat_output = ""
+    on host do |h|
+      proc_out = capture(:cat, '/proc/mounts')
+    end
+    rootfs_rw = proc_out.match(/rootfs\srw\s/)
+    data = check_data(100, usage, options[:warning], options[:critical])
+    puts "ROOTFS_RW #{rootfs_rw ? 'OK - root fs writeable' : 'CRITICAL - rootfs not writeable'}"
+    exit data[0]
+  end
+
+  desc "check network", "check network usage on host"
+  option :host,
+      desc: 'hostname or ipaddress',
+      required: true,
+      aliases: '-H'
+  option :warning,
+      desc: 'warning level',
+      type: :numeric,
+      default: 90,
+      aliases: '-w'
+  option :critical,
+      desc: 'critical level',
+      type: :numeric,
+      default: 95,
+      aliases: '-c'
+  def network
+    host = SSHKit::Host.new("root@#{options[:host]}")
     host.ssh_options = sshoptions
     host.port = 3922
     r1, t1, r2, t2 = ""
@@ -79,22 +123,11 @@ class Check < CloudstackNagios::Base
     rbps = (r2 - r1) / 1024
     tbps = (t2 - t1) / 1024
     data = check_data(1048576, tbps, options[:warning], options[:critical])
-    puts "NETWORK #{return_codes[data[0]]} - usage = #{data[1]}% | rxbps=#{rbps.round(0)}, txbps=#{tbps.round(0)}"
+    puts "NETWORK #{RETURN_CODES[data[0]]} - usage = #{data[1]}% | rxbps=#{rbps.round(0)}, txbps=#{tbps.round(0)}"
+    exit data[0]
   end
 
   no_commands do
-
-    def return_codes
-      {0 => 'ok', 1 => 'warning', 2 => 'critical'}
-    end
-
-    def sshoptions
-      {
-        timeout: 5,
-        keys: %w(/var/lib/cloud/management/.ssh/id_rsa),
-        auth_methods: %w(publickey)
-      }
-    end
 
     def check_data(total, usage, warning, critical)
       usage_percent = 100.0 / total * usage
