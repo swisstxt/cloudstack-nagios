@@ -4,7 +4,7 @@ class Check < CloudstackNagios::Base
 
   RETURN_CODES = {0 => 'ok', 1 => 'warning', 2 => 'critical'}
 
-  desc "check memory HOST", "check memory on host"
+  desc "memory HOST", "check memory on host"
   option :host,
       desc: 'hostname or ipaddress',
       required: true,
@@ -19,10 +19,18 @@ class Check < CloudstackNagios::Base
       type: :numeric,
       default: 95,
       aliases: '-c'
+  option :ssh_key,
+      desc: 'ssh private key to use',
+      default: '/var/lib/cloud/management/.ssh/id_rsa'
+  option :port,
+      desc: 'ssh port to use',
+      type: :numeric,
+      default: 3922,
+      aliases: '-p'
   def memory
     host = SSHKit::Host.new("root@#{options[:host]}")
-    host.ssh_options = sshoptions
-    host.port = 3922
+    host.ssh_options = sshoptions(options[:ssh_key])
+    host.port = options[:port]
     free_output = ""
     on host do |h|
       free_output = capture(:free)
@@ -36,7 +44,7 @@ class Check < CloudstackNagios::Base
     exit data[0]
   end
 
-  desc "check cpu", "check memory on host"
+  desc "cpu", "check memory on host"
   option :host,
      desc: 'hostname or ipaddress',
      required: true,
@@ -49,10 +57,18 @@ class Check < CloudstackNagios::Base
       desc: 'critical level',
       type: :numeric,
       default: 95
+  option :ssh_key,
+      desc: 'ssh private key to use',
+      default: '/var/lib/cloud/management/.ssh/id_rsa'
+  option :port,
+      desc: 'ssh port to use',
+      type: :numeric,
+      default: 3922,
+      aliases: '-p'
   def cpu(host)
     host = SSHKit::Host.new("root@#{options[:host]}")
-    host.ssh_options = sshoptions
-    host.port = 3922
+    host.ssh_options = sshoptions(options[:ssh_key])
+    host.port = options[:port]
     mpstat_output = ""
     on host do |h|
       mpstat_output = capture(:mpstat)
@@ -64,7 +80,7 @@ class Check < CloudstackNagios::Base
     exit data[0]
   end
 
-  desc "check rootfs_rw", "check if the rootfs is read/writeable on host"
+  desc "rootfs_rw", "check if the rootfs is read/writeable on host"
   option :host,
       desc: 'hostname or ipaddress',
       required: true,
@@ -79,21 +95,29 @@ class Check < CloudstackNagios::Base
       type: :numeric,
       default: 95,
       aliases: '-c'
+  option :ssh_key,
+      desc: 'ssh private key to use',
+      default: '/var/lib/cloud/management/.ssh/id_rsa'
+  option :port,
+      desc: 'ssh port to use',
+      type: :numeric,
+      default: 3922,
+      aliases: '-p'
   def rootfs_rw
     host = SSHKit::Host.new("root@#{options[:host]}")
-    host.ssh_options = sshoptions
-    host.port = 3922
-    mpstat_output = ""
+    host.ssh_options = sshoptions(options[:ssh_key])
+    host.port = options[:port]
+    proc_out = ""
     on host do |h|
       proc_out = capture(:cat, '/proc/mounts')
     end
     rootfs_rw = proc_out.match(/rootfs\srw\s/)
-    data = check_data(100, usage, options[:warning], options[:critical])
-    puts "ROOTFS_RW #{rootfs_rw ? 'OK - root fs writeable' : 'CRITICAL - rootfs not writeable'}"
-    exit data[0]
+    status = rootfs_rw ? 0 : 2
+    puts "ROOTFS_RW #{rootfs_rw ? 'OK - rootfs writeable' : 'CRITICAL - rootfs NOT writeable'}"
+    exit status
   end
 
-  desc "check network", "check network usage on host"
+  desc "network", "check network usage on host"
   option :host,
       desc: 'hostname or ipaddress',
       required: true,
@@ -108,10 +132,18 @@ class Check < CloudstackNagios::Base
       type: :numeric,
       default: 95,
       aliases: '-c'
+  option :ssh_key,
+      desc: 'ssh private key to use',
+      default: '/var/lib/cloud/management/.ssh/id_rsa'
+  option :port,
+      desc: 'ssh port to use',
+      type: :numeric,
+      default: 3922,
+      aliases: '-p'
   def network
     host = SSHKit::Host.new("root@#{options[:host]}")
-    host.ssh_options = sshoptions
-    host.port = 3922
+    host.ssh_options = sshoptions(options[:ssh_key])
+    host.port = options[:port]
     r1, t1, r2, t2 = ""
     on host do |h|
       r1 = capture(:cat, '/sys/class/net/eth0/statistics/rx_bytes').to_f

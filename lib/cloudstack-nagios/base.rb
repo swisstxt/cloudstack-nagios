@@ -65,10 +65,10 @@ module CloudstackNagios
         objects.select {|r| r[tag_name].downcase == tag.downcase}
       end
 
-      def sshoptions
+      def sshoptions(ssh_key)
        {
          timeout: 5,
-         keys: %w(/var/lib/cloud/management/.ssh/id_rsa),
+         keys: [ssh_key],
          auth_methods: %w(publickey)
        }
       end

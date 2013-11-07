@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    cloudstack-nagios (0.1.3)
+    cloudstack-nagios (0.2.0)
       erubis (~> 2.7.0)
       highline (~> 1.6.20)
       sshkit (~> 1.1.0)

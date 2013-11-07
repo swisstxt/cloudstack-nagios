@@ -85,7 +85,7 @@ module CloudstackNagios
       require command
     end
 
-    desc ":nagios_config SUBCOMMAND ...ARGS", "Nagios configuration commands"
+    desc "nagios_config SUBCOMMAND ...ARGS", "Nagios configuration commands"
     subcommand :nagios_config, NagiosConfig
 
     desc "snmpd_config SUBCOMMAND ...ARGS", "snmpd configuration commands"

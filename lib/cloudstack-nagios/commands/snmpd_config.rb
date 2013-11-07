@@ -4,11 +4,11 @@ require 'timeout'
 
 class SnmpdConfig < CloudstackNagios::Base
 
-  desc "snmpd_config check [vms]", "check if snmpd is configured on virtual routers"
+  desc "check [vms]", "check if snmpd is configured on virtual routers"
   def check(*vms)
     if vms.size == 0
       say 'Get a list of all routers from cloudstack..', :yellow
-      vms = router_ips(routers)
+      vms = router_ips
     end
     vms.each do |host|
       begin
@@ -23,20 +23,28 @@ class SnmpdConfig < CloudstackNagios::Base
     end
   end
 
-  desc "snmpd_config enable [vms]", "enable snmpd configuration on virtual routers"
+  desc "enable [vms]", "enable snmpd configuration on virtual routers"
   option :apt,
       desc: 'use apt-get to install snmpd packages',
       type: :boolean
+  option :ssh_key,
+      desc: 'ssh private key to use',
+      default: '/var/lib/cloud/management/.ssh/id_rsa'
+  option :port,
+      desc: 'ssh port to use',
+      type: :numeric,
+      default: 3922,
+      aliases: '-p'
   def enable(*vms)
     apt = options[:apt]
     if vms.size == 0
-      say 'Get a list of all routers from cloudstack..', :yellow
+      say 'Get a list of all routers from Cloudstack..', :yellow
       vms = router_ips
     end
     hosts = vms.map do |router|
       host = SSHKit::Host.new("root@#{router}")
-      host.ssh_options = sshoptions
-      host.port = 3922
+      host.ssh_options = sshoptions(options[:ssh_key])
+      host.port = options[:port]
       host
     end
     say 'Connect to router and enable snmpd...', :yellow
@@ -57,7 +65,7 @@ class SnmpdConfig < CloudstackNagios::Base
 
   no_commands do
 
-    def router_ips(vrs = routers)
+    def router_ips(vrs = cs_routers)
       ips = []
       vrs.each do |router|
         ips << router['linklocalip'] unless router['linklocalip'] == nil

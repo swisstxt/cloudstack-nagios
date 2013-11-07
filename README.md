@@ -3,6 +3,13 @@
 Cloudstack Nagios helps you monitoring your Cloudstack environment with Nagios.
 Cloudstack Nagios uses the Cloudsdtack API to collect information about system vm's and cloudstack ressources.
 
+## Prerequisites
+
+  * Cloudstack Root Admin keys must be used.
+  * In order to connect to system vms the private ssh key found on the Cloudstack management server under /var/lib/cloud/management/.ssh/id_rsa must be used.
+  * The system vms must be reachable over SSH (default port 3922) from the nagios server executing the checks.
+    * check with 'ssh -i /var/lib/cloud/management/.ssh/id_rsa -p 3922 <router_mgmt_ip>'
+
 ## Installation
 
 Install the cloudstack-cli gem:
@@ -32,17 +39,44 @@ Example content of the configuration file:
 
 ## Usage
 
+### Basics
+
 See the help screen:
 
     $ cs-nagios
 
-Generate nagios host and services configuration for virtual routers:
+### Generate Nagios configuration files
 
-    $ cs-nagios config
+Generate nagios host configuration for virtual routers:
+
+    $ cs-nagios nagios_config host
+
+Generate nagios host configuration for virtual routers:
+
+    $ cs-nagios nagios_config service
+
+Note that you can also use your own ERB templates using the '--template' option to generate the nagios confifuration files.
+
+### Check system vms over ssh
+
+The following checks are available:
+  
+   * memory - measure memory usage in percents
+   * cpu - measure cpu usage in percent
+   * network - measure network usage
+   * rootfs_rw - check if the root file system is writeable
+
+### Enabling snmpd checks
+
+If you want to check your system vms with standard snmp checks instead of checking over SSH, there are commands to configure snmpd on the machines and open the firewall.
+
+   * snmpd_config enable - goes to all the routers and configure snmpd
+   * snmpd_config check - test if port TCP 161 is reachable on routers
+
+Note: If you want to use snmp checks, you have to adapt the nagios configuration files accordingly.
 
 ## References
 -  [Cloudstack API documentation](http://cloudstack.apache.org/docs/api/apidocs-4.2/TOC_Root_Admin.html)
-
 
 ## Contributing
 
