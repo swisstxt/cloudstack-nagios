@@ -2,8 +2,9 @@ module CloudstackNagios
   module Helper
     def load_template(template_path)
       if File.file?(template_path)
-        templ = File.read(template_path)
-        return Erubis::Eruby.new(templ)
+        templ = Erubis::Eruby.new(File.read template_path)
+        templ.filename = template_path
+        return templ
       else
         say "Error: template not found #{template_path}"
         exit 1
