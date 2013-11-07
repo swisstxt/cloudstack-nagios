@@ -21,7 +21,7 @@ define hostgroup {
   <% if router['linklocalip'] -%>
 define host {
         host_name                     <%= router['name'] %>
-        display_name                  <%= router['name'] %> (<%= <%= router['linklocalip'] %>)<%= " - #{router['project']}" if router['project'] %><%= " - #{router['zonename'] %>
+        display_name                  <%= router['name'] %> (<%= router['linklocalip'] %>)<%= " - #{router['project']}" if router['project'] %> - <%= router['zonename'] %>
         address                       <%= router['linklocalip'] %>
         use			                  Linux-Host,host-pnp
         hostgroups                    Cloudstack-SystemVM
