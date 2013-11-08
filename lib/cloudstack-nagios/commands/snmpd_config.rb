@@ -55,7 +55,7 @@ class SnmpdConfig < CloudstackNagios::Base
         upload! File.join(File.dirname(__FILE__), '..', 'files', 'snmpd.conf'), '/etc/snmp/snmpd.conf'
         execute 'service', 'snmpd', 'restart'
         execute 'iptables', '-A INPUT -p tcp -m tcp --dport 161 -j ACCEPT'
-      rescue StandardError => e 
+      rescue StandardError => e
         puts 'configuration failed!'
         puts e.message
         puts e.backtrace
