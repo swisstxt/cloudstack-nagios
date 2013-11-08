@@ -44,7 +44,7 @@ class Check < CloudstackNagios::Base
       free = values[2].to_i
       free_b = values[7].to_i
       data = check_data(total, total - free_b, options[:warning], options[:critical])
-      puts "MEMORY #{RETURN_CODES[data[0]]} - usage = #{data[1]}% | usage=#{data[1]}% total=#{total}M, free=#{free}M, free_wo_buffers=#{free_b}M"
+      puts "MEMORY #{RETURN_CODES[data[0]]} - usage = #{data[1]}% | usage=#{data[1]}% total=#{total}M free=#{free}M free_wo_buffers=#{free_b}M"
       exit data[0]
     rescue => e
       exit_with_failure(e)
@@ -108,7 +108,7 @@ class Check < CloudstackNagios::Base
       rbps = (rx_bytes[1].to_i - rx_bytes[0].to_i) * 8
       tbps = (tx_bytes[1].to_i - tx_bytes[0].to_i) * 8
       data = check_data(options[:if_speed], rbps, options[:warning], options[:critical])
-      puts "NETWORK #{RETURN_CODES[data[0]]} - usage = #{data[1]}% | usage=#{data[1]}% rxbps=#{rbps.round(0)}, txbps=#{tbps.round(0)}"
+      puts "NETWORK #{RETURN_CODES[data[0]]} - usage = #{data[1]}% | usage=#{data[1]}% rxbps=#{rbps.round(0)} txbps=#{tbps.round(0)}"
       exit data[0]
     rescue => e
       exit_with_failure(e)
