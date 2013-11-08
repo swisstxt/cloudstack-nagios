@@ -99,7 +99,6 @@ class Check < CloudstackNagios::Base
   def network
     begin
       host = systemvm_host
-      raise "arggg"
       stats_path = "/sys/class/net/#{options[:interface]}/statistics"
       rx_bytes, tx_bytes = ""
       on host do |h|
