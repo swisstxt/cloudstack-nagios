@@ -1,5 +1,6 @@
 require "thor"
 require "yaml"
+require 'cloudstack_client'
 
 module CloudstackNagios 
   class Base < Thor
