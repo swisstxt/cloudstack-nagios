@@ -2,35 +2,6 @@ require 'sshkit/dsl'
 
 class Router < CloudstackNagios::Base
 
-  RETURN_CODES = {0 => 'ok', 1 => 'warning', 2 => 'critical'}
-
-  class_option :host,
-      desc: 'hostname or ipaddress',
-      required: true,
-      aliases: '-H'
-
-  class_option :warning,
-      desc: 'warning level',
-      type: :numeric,
-      default: 90,
-      aliases: '-w'
-
-  class_option :critical,
-      desc: 'critical level',
-      type: :numeric,
-      default: 95,
-      aliases: '-c'
-
-  class_option :ssh_key,
-      desc: 'ssh private key to use',
-      default: '/var/lib/cloud/management/.ssh/id_rsa'
-
-  class_option :port,
-      desc: 'ssh port to use',
-      type: :numeric,
-      default: 3922,
-      aliases: '-p'
-
   desc "memory HOST", "check memory on host"
   def memory
     begin
@@ -94,7 +65,7 @@ class Router < CloudstackNagios::Base
   option :if_speed,
       desc: 'network interface speed in bits per second',
       type: :numeric,
-      default: 1000000000,
+      default: 1000000,
       aliases: '-s'
   def network
     begin

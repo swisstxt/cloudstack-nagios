@@ -14,25 +14,25 @@
 
 define command {
         command_name                   cs-nagios_check-memory
-        command_line                   <%= bin_path -%>/cs-nagios check memory -H $HOSTADDRESS$ -w $ARG1$ -c $ARG2$ --config <%= config_file %>
+        command_line                   <%= bin_path -%>/cs-nagios check router memory -H $HOSTADDRESS$ -w $ARG1$ -c $ARG2$ --config <%= config_file %>
         register                       1
 }
 
 define command {
         command_name                   cs-nagios_check-cpu
-        command_line                   <%= bin_path -%>/cs-nagios check cpu -H $HOSTADDRESS$ -w $ARG1$ -c $ARG2$ --config <%= config_file %>
+        command_line                   <%= bin_path -%>/cs-nagios check router cpu -H $HOSTADDRESS$ -w $ARG1$ -c $ARG2$ --config <%= config_file %>
         register                       1
 }
 
 define command {
         command_name                   cs-nagios_check-network
-        command_line                   <%= bin_path -%>/cs-nagios check network -H $HOSTADDRESS$ -w $ARG1$ -c $ARG2$ --config <%= config_file %>
+        command_line                   <%= bin_path -%>/cs-nagios check router network -H $HOSTADDRESS$ -w $ARG1$ -c $ARG2$ --config <%= config_file %>
         register                       1
 }
 
 define command {
         command_name                   cs-nagios_check-rootfsrw
-        command_line                   <%= bin_path -%>/cs-nagios check rootfs_rw -H $HOSTADDRESS$ -w $ARG1$ -c $ARG2$ --config <%= config_file %>
+        command_line                   <%= bin_path -%>/cs-nagios check router rootfs_rw -H $HOSTADDRESS$ -w $ARG1$ -c $ARG2$ --config <%= config_file %>
         register                       1
 }
 

@@ -12,21 +12,21 @@
 ###############################################################################
 
 define hostgroup {
-        hostgroup_name                 Cloudstack-SystemVM
-        alias                          Cloudstack-SystemVM
-        register                       1
+  hostgroup_name  Cloudstack-SystemVM
+  alias           Cloudstack-SystemVM
+  register        1
 }
+
 <% routers.each do |router| -%>
   <% if router['linklocalip'] -%>
-
 define host {
-        host_name                     <%= router['name'] %>
-        display_name                  <%= router['name'] %> (<%= router['linklocalip'] %>)<%= " - #{router['project']}" if router['project'] %> - <%= router['zonename'] %>
-        address                       <%= router['linklocalip'] %>
-        use			                  Linux-Host,host-pnp
-        hostgroups                    Cloudstack-SystemVM
-        check_command                 check-host-alive
-        register                      1
+  host_name      <%= router['name'] %>
+  display_name   <%= router['name'] %> (<%= router['linklocalip'] %>)<%= " - #{router['project']}" if router['project'] %> - <%= router['zonename'] %>
+  address        <%= router['linklocalip'] %>
+  use			       Linux-Host,host-pnp
+  hostgroups     Cloudstack-SystemVM
+  check_command  check-host-alive
+  register       1
 }
   <% end -%>
 <% end -%>
