@@ -1,7 +1,7 @@
 # Cloudstack Nagios
 
 Cloudstack Nagios helps you monitoring your Cloudstack environment with Nagios.
-Cloudstack Nagios uses the Cloudstack API to collect information about system vm's and Cloudstack ressources.
+Cloudstack Nagios uses the Cloudstack API to collect information about system vm's and ressources.
 
 The following checks are supported:
   * system and network checks for virtual routers
