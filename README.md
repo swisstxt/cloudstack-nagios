@@ -5,10 +5,9 @@ Cloudstack Nagios uses the Cloudsdtack API to collect information about system v
 
 ## Prerequisites
 
-  * Cloudstack Root Admin keys must be used.
-  * In order to connect to system vms the private ssh key found on the Cloudstack management server under /var/lib/cloud/management/.ssh/id_rsa must be used.
-  * The system vms must be reachable over SSH (default port 3922) from the nagios server executing the checks.
-    * check with 'ssh -i /var/lib/cloud/management/.ssh/id_rsa -p 3922 <router_mgmt_ip>'
+  * Cloudstack Root Admin keys have to be used.
+  * In order to connect to system VMs the private ssh key found on the Cloudstack management server under /var/lib/cloud/management/.ssh/id_rsa are required.
+  * The system vms must be reachable over SSH (default port 3922) from the nagios server executing the checks (check with 'ssh -i /var/lib/cloud/management/.ssh/id_rsa -p 3922 <router_mgmt_ip>').
 
 ## Installation
 
@@ -137,7 +136,7 @@ $ cs-nagios check storage_pool --pool_name fs_cs_zone01_pod01
 
 ## References
 
-    * [Cloudstack API documentation](http://cloudstack.apache.org/docs/api/apidocs-4.2/TOC_Root_Admin.html)
+  * [Cloudstack API documentation](http://cloudstack.apache.org/docs/api/apidocs-4.2/TOC_Root_Admin.html)
 
 ## Contributing
 
