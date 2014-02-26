@@ -15,7 +15,7 @@
 <% storage_pools.each do |storage_pool| -%>
 define command {
   command_name  cs-nagios_check-storage_pool
-  command_line  <%= bin_path -%>/cs-nagios check storage_pool --name <%= storage_pool['name'] -%> --zone <%= storage_pool['zonename'] -%> -w $ARG1$ -c $ARG2$ --config <%= config_file %>
+  command_line  <%= bin_path -%>/cs-nagios check storage_pool --pool_name <%= storage_pool['name'] -%> --zone <%= storage_pool['zonename'] -%> -w $ARG1$ -c $ARG2$ --config <%= config_file %>
   register      1
 }
 

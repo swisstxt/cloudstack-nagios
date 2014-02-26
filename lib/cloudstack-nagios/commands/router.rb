@@ -89,6 +89,10 @@ class Router < CloudstackNagios::Base
   no_commands do
 
     def systemvm_host
+      unless options[:host]
+        say "Error: --host/-H option is required for this check.", :red
+        exit 1
+      end
       host = SSHKit::Host.new("root@#{options[:host]}")
       host.ssh_options = sshoptions(options[:ssh_key])
       host.port = options[:port]

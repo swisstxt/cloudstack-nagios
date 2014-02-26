@@ -6,7 +6,6 @@ class Check < CloudstackNagios::Base
 
    class_option :host,
       desc: 'hostname or ipaddress',
-      default: '127.0.0.1',
       aliases: '-H'
 
    class_option :warning,
@@ -37,10 +36,10 @@ class Check < CloudstackNagios::Base
    desc "capacity SUBCOMMAND ...ARGS", "capacity checks"
    subcommand :capacity, Capacity
 
-   desc "stoarge_pool SUBCOMMAND ...ARGS", "storage_pool checks"
+   desc "storage_pool SUBCOMMAND ...ARGS", "storage_pool checks"
    subcommand :capacity, Capacity
 
-   desc "storage_pool", "check capacity of storage_pool"
+   desc "capacity", "check capacity of storage_pool"
    option :pool_name, required: true
    option :zone
    def storage_pool
