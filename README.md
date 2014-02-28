@@ -27,7 +27,7 @@ $ gem install cloudstack-nagios
 Create the initial configuration:
 
 ```bash
-$ cs setup
+$ cs-nagios setup
 ```
 
 cloudstack-nagios expects to find a configuartion file with the API URL and your CloudStack credentials in your home directory named .cloudstack-cli.yml. If the file is located elsewhere you can specify the loaction using the --config option.
