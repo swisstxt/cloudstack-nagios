@@ -42,9 +42,15 @@ class Check < CloudstackNagios::Base
    desc "capacity", "check capacity of storage_pool"
    option :pool_name, required: true
    option :zone
+   option :over_provisioning, type: :numeric, default: 1.0
    def storage_pool
       pool = client.list_storage_pools(name: options[:pool_name], zone: options[:zone]).first
-      data = check_data(pool['disksizetotal'].to_f, pool['disksizeused'].to_f, options[:warning], options[:critical])
+      data = check_data(
+         pool['disksizetotal'] * options[:over_provisioning],
+         pool['disksizeallocated'].to_f,
+         options[:warning],
+         options[:critical]
+      )
       puts "storage_pool #{options[:pool_name]} #{RETURN_CODES[data[0]]} - usage = #{data[1]}% | usage=#{pool['disksizeused']}"
       exit data[0]
    end

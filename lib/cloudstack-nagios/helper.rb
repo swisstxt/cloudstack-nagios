@@ -36,7 +36,6 @@ module CloudstackNagios
         code = 1
       else 
         code = 2
-        usage_percent = 0
       end
       [code, usage_percent.round(0)]
     end

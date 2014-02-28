@@ -10,7 +10,7 @@ Gem::Specification.new do |gem|
   gem.email         = ["nik.wolfgramm@gmail.com"]
   gem.description   = %q{cloudstack-nagios generates nagios configuration and checks for monitoring CloudStack with nagios.}
   gem.summary       = %q{cloudstack-nagios CloudStack monitoring tools for nagios}
-  gem.homepage      = "https://bitbucket.org/swisstxt/cloudstack-nagios"
+  gem.homepage      = "https://github.com/swisstxt/cloudstack-nagios"
   gem.license       = 'MIT'
 
   gem.required_ruby_version = '>= 1.9.3'

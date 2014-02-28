@@ -1,5 +1,7 @@
 class NagiosConfig < CloudstackNagios::Base
 
+  class_option :bin_path, desc: "absolute path to the nagios-cloudstack binary"
+
   desc "router_hosts", "generate nagios hosts configuration for virtual routers"
   option :template,
     desc: "path of ERB template to use",
@@ -48,6 +50,7 @@ class NagiosConfig < CloudstackNagios::Base
     desc: "path of ERB template to use",
     default: File.join(File.dirname(__FILE__), '..', 'templates', 'cloudstack_storage_pool_services.cfg.erb'),
     aliases: '-t'
+  option :over_provisioning, type: :numeric, default: 1.0
   def storage_pool_services
     service_template = load_template(options[:template])
     storage_pools = client.list_storage_pools.select do |pool| 
@@ -55,6 +58,7 @@ class NagiosConfig < CloudstackNagios::Base
     end
     puts service_template.result(
       storage_pools: storage_pools,
+      over_provisioning: options[:over_provisioning],
       bin_path: bin_path,
       config_file: options[:config],
       date: date_string
@@ -82,7 +86,7 @@ class NagiosConfig < CloudstackNagios::Base
     end
 
     def bin_path
-      File.expand_path(File.join(File.dirname(__FILE__), '..', '..', '..', 'bin'))
+      options[:bin_path] || File.expand_path(File.join(File.dirname(__FILE__), '..', '..', '..', 'bin'))
     end
   end
 
