@@ -11,7 +11,6 @@ class NagiosConfig < CloudstackNagios::Base
   	host_template = load_template(options[:template])
     puts host_template.result(
       routers: cs_routers,
-      bin_path: options[:bin_path],
       date: date_string
     )
   end
@@ -25,7 +24,7 @@ class NagiosConfig < CloudstackNagios::Base
   	service_template = load_template(options[:template])
     puts service_template.result(
       routers: cs_routers,
-      bin_path: options[:bin_path],
+      bin_path: bin_path,
       config_file: options[:config],
       date: date_string
     )
@@ -40,7 +39,7 @@ class NagiosConfig < CloudstackNagios::Base
     service_template = load_template(options[:template])
     puts service_template.result(
       zones: client.list_zones,
-      bin_path: options[:bin_path],
+      bin_path: bin_path,
       config_file: options[:config],
       date: date_string
     )
@@ -60,7 +59,7 @@ class NagiosConfig < CloudstackNagios::Base
     puts service_template.result(
       storage_pools: storage_pools,
       over_provisioning: options[:over_provisioning],
-      bin_path: options[:bin_path],
+      bin_path: bin_path,
       config_file: options[:config],
       date: date_string
     )
@@ -75,7 +74,7 @@ class NagiosConfig < CloudstackNagios::Base
     service_template = load_template(options[:template])
     puts service_template.result(
       capacity_types: Capacity::CAPACITY_TYPES,
-      bin_path: options[:bin_path] ,
+      bin_path: bin_path,
       config_file: options[:config],
       date: date_string
     )
@@ -84,6 +83,14 @@ class NagiosConfig < CloudstackNagios::Base
   no_commands do
     def date_string
       Time.new.strftime("%d.%m.%Y - %H:%M:%S")
+    end
+
+    def bin_path
+      unless options[:bin_path]
+        return ''
+      else
+        return options[:bin_path].end_with?('/') ? options[:bin_path] : options[:bin_path] + "/"
+      end
     end
   end
 
