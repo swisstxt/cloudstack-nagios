@@ -29,11 +29,17 @@ class NagiosConfig < CloudstackNagios::Base
     desc: "path of ERB template to use",
     default: File.join(File.dirname(__FILE__), '..', 'templates', 'cloudstack_router_services.cfg.erb'),
     aliases: '-t'
+  option :if_speed,
+    desc: 'network interface speed in bits per second',
+    type: :numeric,
+    default: 1000000,
+    aliases: '-s'
   def router_services
   	service_template = load_template(options[:template])
     puts service_template.result(
       routers: cs_routers,
       bin_path: bin_path,
+      if_speed: options[:if_speed],
       config_file: options[:config],
       date: date_string
     )
