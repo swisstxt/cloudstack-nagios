@@ -22,7 +22,7 @@ define command {
 
 <% capacity_types.each do |cap_type, cap_values| -%>
 define service {
-        hostgroup_name                  Cloudstack-SystemVM
+        hostgroup_name                  Cloudstack-API
         service_description             <%= cap_values[:name] %>
         display_name                    <%= cap_values[:method_name] %>
         use                             Generic-Service,service-pnp
