@@ -57,7 +57,15 @@ See the help screen:
 $ cs-nagios
 ```
 
-### Generate Nagios configuration files
+### Generate all Nagios configuration files at once 
+
+Generate all configuration files:
+
+```bash
+$ cs-nagios nagios_config generate_all
+```
+
+### Generate Nagios configuration files of each type
 
 Note that you can also use your own ERB templates using the '--template' option to generate the nagios confifuration files.
 

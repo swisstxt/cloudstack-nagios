@@ -2,6 +2,15 @@ class NagiosConfig < CloudstackNagios::Base
 
   class_option :bin_path, desc: "absolute path to the nagios-cloudstack binary"
 
+  desc "generate_all", "generate all nagios configs"
+  def generate_all
+    commands = %w(router_hosts router_services api_hosts storage_pool_services capacity_services asyncjobs_services)
+    commands.each do |command|
+      invoke "nagios_config:#{command}"
+      puts
+    end
+  end
+
   desc "router_hosts", "generate nagios hosts configuration for virtual routers"
   option :template,
     desc: "path of ERB template to use",
