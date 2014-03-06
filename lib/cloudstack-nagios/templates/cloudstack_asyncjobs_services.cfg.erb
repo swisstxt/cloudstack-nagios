@@ -1,6 +1,6 @@
 ###############################################################################
 #
-# Cloudstack capcity services configuration file
+# Cloudstack async jobs services configuration file
 #
 # Created by: cloudstack-nagios
 # Date:       <%= date %>
@@ -11,26 +11,21 @@
 #
 ###############################################################################
 
-<% capacity_types.each do |cap_type, cap_values| -%>
 define command {
-        command_name                   cs-nagios_check-capacity_<%= cap_values[:method_name] %>
-        command_line                   <%= bin_path -%>cs-nagios check capacity <%= cap_values[:method_name] %> -w $ARG1$ -c $ARG2$ --config <%= config_file %>
+        command_name                   cs-nagios_check-asyncjobs
+        command_line                   <%= bin_path -%>cs-nagios check async_jobs -w $ARG1$ -c $ARG2$ --config <%= config_file %>
         register                       1
 }
 
-<% end -%>
-
-<% capacity_types.each do |cap_type, cap_values| -%>
 define service {
         hostgroup_name                  Cloudstack-SystemVM
-        service_description             <%= cap_values[:name] %>
-        display_name                    <%= cap_values[:method_name] %>
+        service_description             Cloudstack Async Jobs
+        display_name                    Cloudstack Async Jobs
         use                             Generic-Service,service-pnp
-        check_command                   cs-nagios_check-capacity_<%= cap_values[:method_name] -%>!80!90
+        check_command                   cs-nagios_check-asyncjobs!80!90
         register                        1
 }
 
-<% end -%>
 ###############################################################################
 #
 # Service configuration file

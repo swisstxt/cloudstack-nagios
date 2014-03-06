@@ -80,6 +80,20 @@ class NagiosConfig < CloudstackNagios::Base
     )
   end
 
+  desc "asyncjobs_services", "generate nagios capacity services configuration"
+  option :template,
+    desc: "path of ERB template to use",
+    default: File.join(File.dirname(__FILE__), '..', 'templates', 'cloudstack_asyncjobs_services.cfg.erb'),
+    aliases: '-t'
+  def asyncjobs_services
+    service_template = load_template(options[:template])
+    puts service_template.result(
+      bin_path: bin_path,
+      config_file: options[:config],
+      date: date_string
+    )
+  end
+
   no_commands do
     def date_string
       Time.new.strftime("%d.%m.%Y - %H:%M:%S")

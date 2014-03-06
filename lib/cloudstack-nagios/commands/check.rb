@@ -55,4 +55,27 @@ class Check < CloudstackNagios::Base
       exit data[0]
    end
 
+   desc "async_jobs", "check the number of pending async jobs"
+   option :warning,
+      desc: 'warning level',
+      type: :numeric,
+      default: 5,
+      aliases: '-w'
+   option :critical,
+      desc: 'critical level',
+      type: :numeric,
+      default: 10,
+      aliases: '-c'
+   def async_jobs
+      jobs = client.send_request('command' => 'listAsyncJobs', 'listall' => 'true')['asyncjobs']
+      outstanding_jobs = jobs.select {|job| job['jobstatus'] == 0 }
+      if outstanding_jobs.size < options[:warning]
+        code = 0
+      elsif outstanding_jobs.size < options[:critical]
+        code = 1
+      else 
+        code = 2
+      end 
+      puts "async_jobs #{RETURN_CODES[code]} - jobs = #{outstanding_jobs.size} | jobs=#{outstanding_jobs.size}"
+   end
 end

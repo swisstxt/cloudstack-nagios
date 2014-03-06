@@ -91,6 +91,12 @@ Generate nagios service configuration for capacity checks:
 $ cs-nagios nagios_config capacity_services
 ```
 
+Generate nagios service configuration for async job checks:
+
+```bash
+$ cs-nagios nagios_config asyncjobs_services
+```
+
 ### System VM checks
 
 For all vm checks access to the cloudstack management network is required in order to run the ckecks via ssh or snmp.
@@ -130,7 +136,7 @@ Example:
 $ cs-nagios check capacity memory --zone ZUERICH_IX
 ```
 
-### Storage Pool checks
+### Storage pool checks
 
 Checks the available disk space on Cloudstack storage pools.
 
@@ -138,6 +144,16 @@ Example:
 
 ```bash
 $ cs-nagios check storage_pool --pool_name fs_cs_zone01_pod01
+```
+
+### Async jobs checks
+
+Checks the number of pending async jobs.
+
+Example:
+
+```bash
+$ cs-nagios check async_jobs
 ```
 
 ## References
