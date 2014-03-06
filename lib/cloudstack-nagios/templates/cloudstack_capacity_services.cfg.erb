@@ -25,10 +25,10 @@ define command {
   <% capacity_types.each do |cap_type, cap_values| -%>
 define service {
         hostgroup_name       Cloudstack-API
-        service_description  Cloudstack <%= zone %> <%= cap_values[:name] %>
-        display_name         Cloudstack <%= zone %> <%= cap_values[:method_name] %>
+        service_description  Cloudstack <%= zone['name'] %> <%= cap_values[:name] %>
+        display_name         Cloudstack <%= zone['name'] %> <%= cap_values[:method_name] %>
         use                  Generic-Service,service-pnp
-        check_command        cs-nagios_check-capacity_<%= cap_values[:method_name] -%>!80!90!<%= zone %>
+        check_command        cs-nagios_check-capacity_<%= cap_values[:method_name] -%>!80!90!<%= zone['name'] %>
         register             1
 }
 
