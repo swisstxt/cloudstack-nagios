@@ -11,25 +11,28 @@
 #
 ###############################################################################
 
+
 <% capacity_types.each do |cap_type, cap_values| -%>
 define command {
-        command_name                   cs-nagios_check-capacity_<%= cap_values[:method_name] %>
-        command_line                   <%= bin_path -%>cs-nagios check capacity <%= cap_values[:method_name] %> -w $ARG1$ -c $ARG2$ --config <%= config_file %>
-        register                       1
+        command_name  cs-nagios_check-capacity_<%= cap_values[:method_name] %>
+        command_line  <%= bin_path -%>cs-nagios check capacity <%= cap_values[:method_name] %> -w $ARG1$ -c $ARG2$ --config <%= config_file %> --zone $ARG3$
+        register      1
 }
 
 <% end -%>
 
-<% capacity_types.each do |cap_type, cap_values| -%>
+<% zones.each do |zone| -%>
+  <% capacity_types.each do |cap_type, cap_values| -%>
 define service {
-        hostgroup_name                  Cloudstack-API
-        service_description             <%= cap_values[:name] %>
-        display_name                    <%= cap_values[:method_name] %>
-        use                             Generic-Service,service-pnp
-        check_command                   cs-nagios_check-capacity_<%= cap_values[:method_name] -%>!80!90
-        register                        1
+        hostgroup_name       Cloudstack-API
+        service_description  Cloudstack <%= zone %> <%= cap_values[:name] %>
+        display_name         Cloudstack <%= zone %> <%= cap_values[:method_name] %>
+        use                  Generic-Service,service-pnp
+        check_command        cs-nagios_check-capacity_<%= cap_values[:method_name] -%>!80!90!<%= zone %>
+        register             1
 }
 
+  <% end -%>
 <% end -%>
 ###############################################################################
 #

@@ -82,6 +82,7 @@ class NagiosConfig < CloudstackNagios::Base
   def capacity_services
     service_template = load_template(options[:template])
     puts service_template.result(
+      zones: client.list_zones,
       capacity_types: Capacity::CAPACITY_TYPES,
       bin_path: bin_path,
       config_file: options[:config],
