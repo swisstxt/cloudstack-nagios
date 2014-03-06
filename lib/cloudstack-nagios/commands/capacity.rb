@@ -5,11 +5,11 @@ class Capacity < CloudstackNagios::Base
     1 => {name: "CPU", method_name: "cpu"},
     2 => {name: "Storage", method_name: "storage"},
     3 => {name: "Primary Storage", method_name: "primary_storage"},
-    4 => {name: "Public IP's", method_name: "public_ips"},
-    5 => {name: "Private IP's", method_name: "private_ips"},
+    4 => {name: "Public IP addresses", method_name: "public_ips"},
+    5 => {name: "Private IP addresses", method_name: "private_ips"},
     6 => {name: "Secondary Storage", method_name: "secondary_storage"},
     7 => {name: "VLANs", method_name: "vlans"},
-    8 => {name: "Direct Attached Public IP's", method_name: "direct_attached_public_ips"},
+    8 => {name: "Direct Attached Public IP addresses", method_name: "direct_attached_public_ips"},
     9 => {name: "Local Storage", method_name: "local_storage"}
   }
 
