@@ -103,6 +103,7 @@ The following checks are available:
    * cpu - measure cpu usage in percent
    * network - measure network usage
    * rootfs_rw - check if the root file system is writeable
+   * disk_usage - check the diks space usage of the root volume
 
 Example:
 

@@ -57,6 +57,27 @@ class Router < CloudstackNagios::Base
     end
   end
 
+  desc "disk_usage", "check the disk space usage of the root volume"
+  def disk_usage
+    begin
+      host = systemvm_host
+      proc_out = ""
+      on host do |h|
+        proc_out = capture(:df, '/')
+      end
+      match = proc_out.match(/.*\s(\d+)%\s+\/$/)
+      if match
+        usage = match[1]
+        data = check_data(100, usage, options[:warning], options[:critical])
+        puts "DISK_USAGE #{RETURN_CODES[data[0]]} - usage = #{data[1]}% | usage=#{data[1]}%"
+      else
+        puts "DISK_USAGE UNKNOWN"
+      end
+    rescue => e
+      exit_with_failure(e)
+    end
+  end
+
   desc "network", "check network usage on host"
   option :interface,
       desc: 'network interface to probe',
