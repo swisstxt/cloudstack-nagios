@@ -5,7 +5,7 @@ define host {
   host_name      <%= router['name'] %>
   display_name   <%= router['name'] %> (<%= router['linklocalip'] %>)<%= " - #{router['project']}" if router['project'] %> - <%= router['zonename'] %>
   address        <%= router['linklocalip'] %>
-  use			       Linux-Host,host-pnp
+  use            Linux-Host,host-pnp
   hostgroups     Cloudstack
   check_command  check-host-alive
   register       1
