@@ -31,8 +31,8 @@ define command {
 
 define service {
         hostgroup_name       Cloudstack
-        service_description  Memory
-        display_name         Memory
+        service_description  Cloudstack Virtual Router Memory
+        display_name         Cloudstack Virtual Router Memory
         use                  Generic-Service,service-pnp
         check_command        cs-nagios_check-memory!80!90
         register             1
@@ -40,8 +40,8 @@ define service {
 
 define service {
         hostgroup_name       Cloudstack
-        service_description  CPU
-        display_name         CPU
+        service_description  Cloudstack Virtual Router CPU
+        display_name         Cloudstack Virtual Router CPU
         use                  Generic-Service,service-pnp
         check_command        cs-nagios_check-cpu!80!90
         register             1
@@ -49,8 +49,8 @@ define service {
 
 define service {
         hostgroup_name       Cloudstack
-        service_description  Network
-        display_name         Network
+        service_description  Cloudstack Virtual Router Network
+        display_name         Cloudstack Virtual Router Network
         use                  Generic-Service,service-pnp
         check_command        cs-nagios_check-network!80!90
         register             1
@@ -58,8 +58,8 @@ define service {
 
 define service {
         hostgroup_name       Cloudstack
-        service_description  RootFS rw
-        display_name         RootFS rw
+        service_description  Cloudstack Virtual Router RootFS rw
+        display_name         Cloudstack Virtual Router RootFS rw
         use                  Generic-Service,service-pnp
         check_command        cs-nagios_check-rootfsrw!80!90
         register             1
@@ -67,8 +67,8 @@ define service {
 
 define service {
         hostgroup_name       Cloudstack
-        service_description  DiskUsage
-        display_name         DiskUsage
+        service_description  Cloudstack Virtual RouterDiskUsage
+        display_name         Cloudstack Virtual Router DiskUsage
         use                  Generic-Service,service-pnp
         check_command        cs-nagios_check-diskusage!80!90
         register             1

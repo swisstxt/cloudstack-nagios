@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    cloudstack-nagios (0.8.0)
+    cloudstack-nagios (0.8.1)
       cloudstack_client (~> 0.4, >= 0.4.4)
       erubis (~> 2.7.0)
       highline (~> 1.6.20)

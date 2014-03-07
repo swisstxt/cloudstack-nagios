@@ -2,19 +2,17 @@ class NagiosConfig < CloudstackNagios::Base
 
   TEMPLATE_DIR = File.join(File.dirname(__FILE__), '..', 'templates')
 
-  class_option :bin_path, desc: "absolute path to the nagios-cloudstack binary"
-
-  class_option :template,
+  desc "generate [type]", "generate all nagios configs"
+  option :bin_path, desc: "absolute path to the nagios-cloudstack binary"
+  option :template,
     desc: "Path of ERB template to use. Only valid when generating a single configuration",
     aliases: '-t'
-
-  class_option :if_speed,
+  option :if_speed,
     desc: 'network interface speed in bits per second',
     type: :numeric,
     default: 1000000,
     aliases: '-s'
-
-  desc "generate [type]", "generate all nagios configs"
+  option :over_provisioning, type: :numeric, default: 1.0
   def generate(*configs)
     configs = get_configs(configs)
     if configs.size == 0
