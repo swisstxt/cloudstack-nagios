@@ -8,7 +8,7 @@ module CloudstackNagios
         templ.filename = template_path
         return templ
       else
-        say "Error: template not found #{template_path}"
+        say "Error: Template \"#{template_path}\" not found.", :red
         exit 1
       end
     end
@@ -16,6 +16,12 @@ module CloudstackNagios
     def cs_routers
       routers = client.list_routers(status: 'Running')
       routers += client.list_routers(projectid: -1, status: 'Running')
+    end
+
+    def storage_pools
+      storage_pools = client.list_storage_pools.select do |pool| 
+        pool['state'].downcase == 'up'
+      end
     end
 
     def exit_with_failure(exception)

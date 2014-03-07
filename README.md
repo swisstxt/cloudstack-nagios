@@ -18,7 +18,7 @@ The following checks are supported:
 
 Install the cloudstack-cli gem:
 
-```bash
+```sh
 $ gem install cloudstack-nagios
 ```
 
@@ -26,7 +26,7 @@ $ gem install cloudstack-nagios
 
 Create the initial configuration:
 
-```bash
+```sh
 $ cs-nagios setup
 ```
 
@@ -53,7 +53,7 @@ test:
 
 See the help screen:
 
-```bash
+```sh
 $ cs-nagios
 ```
 
@@ -61,48 +61,22 @@ $ cs-nagios
 
 Generate all configuration files:
 
-```bash
-$ cs-nagios nagios_config generate_all
+```sh
+$ cs-nagios nagios_config generate all
 ```
+You can also generate each config file individualy.
+The following types are awailable:
 
-### Generate Nagios configuration files of each type
-
-Note that you can also use your own ERB templates using the '--template' option to generate the nagios confifuration files.
-
-Generate nagios host configuration for virtual routers:
-
-```bash
-$ cs-nagios nagios_config router_hosts
-```
-
-Generate nagios host configuration for virtual routers:
-
-```bash
-$ cs-nagios nagios_config router_services
-```
-
-Generate nagios host configuration api hosts (one pseudo host per Cloudstack zone):
-
-```bash
-$ cs-nagios nagios_config api_hosts
-```
-
-Generate nagios service configuration for storage pool checks:
-
-```bash
-$ cs-nagios nagios_config storage_pool_services
-```
-
-Generate nagios service configuration for capacity checks:
-
-```bash
-$ cs-nagios nagios_config capacity_services
-```
-
-Generate nagios service configuration for async job checks:
-
-```bash
-$ cs-nagios nagios_config asyncjobs_services
+```sh
+$ cs-nagios nagios_config list
+all
+hostgroup
+zone_hosts
+router_hosts
+router_services
+capacities
+async_jobs
+storage_pools
 ```
 
 ### System VM checks
@@ -121,7 +95,7 @@ The following checks are available:
 
 Example:
 
-```bash
+```sh
 $ cs-nagios check system_vm network --host 10.100.9.161
 ```
 
@@ -140,7 +114,7 @@ Checks various global capacity values.
 
 Example:
 
-```bash
+```sh
 $ cs-nagios check capacity memory --zone ZUERICH_IX
 ```
 
@@ -150,7 +124,7 @@ Checks the available disk space on Cloudstack storage pools.
 
 Example:
 
-```bash
+```sh
 $ cs-nagios check storage_pool --pool_name fs_cs_zone01_pod01
 ```
 
@@ -160,7 +134,7 @@ Checks the number of pending async jobs.
 
 Example:
 
-```bash
+```sh
 $ cs-nagios check async_jobs
 ```
 

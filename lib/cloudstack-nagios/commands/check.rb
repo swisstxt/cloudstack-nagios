@@ -51,7 +51,7 @@ class Check < CloudstackNagios::Base
          options[:warning],
          options[:critical]
       )
-      puts "storage_pool #{options[:pool_name]} #{RETURN_CODES[data[0]]} - usage = #{data[1]}% | usage=#{pool['disksizeused']}"
+      puts "storage_pool #{options[:pool_name]} #{RETURN_CODES[data[0]]} - usage = #{data[1]}% | usage=#{pool['disksizeused']} usage=#{data[1]}%"
       exit data[0]
    end
 
