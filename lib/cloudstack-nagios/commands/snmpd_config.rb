@@ -44,7 +44,7 @@ class SnmpdConfig < CloudstackNagios::Base
     hosts = vms.map do |router|
       host = SSHKit::Host.new("root@#{router}")
       host.ssh_options = sshoptions(options[:ssh_key])
-      host.port = options[:port]
+      host.port = options[:ssh_port]
       host
     end
     say 'Connect to router and enable snmpd...', :yellow
