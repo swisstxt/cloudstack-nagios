@@ -70,7 +70,7 @@ The following types are awailable:
 ```sh
 $ cs-nagios nagios_config list
 all
-hostgroup
+hostgroups
 zone_hosts
 router_hosts
 router_services
