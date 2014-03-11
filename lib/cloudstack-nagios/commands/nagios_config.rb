@@ -12,6 +12,14 @@ class NagiosConfig < CloudstackNagios::Base
     type: :numeric,
     default: 1000000,
     aliases: '-s'
+  option :ssh_key,
+      desc: 'ssh private key to use',
+      default: '/var/lib/cloud/management/.ssh/id_rsa'
+  option :ssh_port,
+    desc: 'ssh port to use',
+    type: :numeric,
+    default: 3922,
+    aliases: '-p'
   option :over_provisioning, type: :numeric, default: 1.0
   def generate(*configs)
     configs = get_configs(configs)
@@ -50,6 +58,8 @@ class NagiosConfig < CloudstackNagios::Base
         capacity_types: Capacity::CAPACITY_TYPES,
         storage_pools: pools,
         over_provisioning: options[:over_provisioning],
+        ssh_key: options[:ssh_key],
+        ssh_port: options[:ssh_port]
       )
     end
     footer = load_template(File.join(TEMPLATE_DIR, "footer.cfg.erb"))

@@ -25,7 +25,7 @@ class Capacity < CloudstackNagios::Base
     def capacity_check(zone, type)
       cap = client.list_capacity(type: type, zone: zone).first
       data = check_data(cap['capacitytotal'].to_f, cap['capacityused'].to_f, options[:warning], options[:critical])
-      puts "#{CAPACITY_TYPES[type][:name]} #{RETURN_CODES[data[0]]} - usage = #{data[1]}% | usage=#{cap['capacityused']} usage=#{data[1]}%"
+      puts "#{CAPACITY_TYPES[type][:name]} #{RETURN_CODES[data[0]]} - usage = #{data[1]}% | usage=#{cap['capacityused']} usage_perc=#{data[1]}%"
       exit data[0]
     end
   end

@@ -116,7 +116,7 @@ class Router < CloudstackNagios::Base
       end
       host = SSHKit::Host.new("root@#{options[:host]}")
       host.ssh_options = sshoptions(options[:ssh_key])
-      host.port = options[:port]
+      host.port = options[:ssh_port]
       host
     end
 
