@@ -24,7 +24,7 @@ class Check < CloudstackNagios::Base
       desc: 'ssh private key to use',
       default: '/var/lib/cloud/management/.ssh/id_rsa'
 
-   class_option :port,
+   class_option :ssh_port,
       desc: 'ssh port to use',
       type: :numeric,
       default: 3922,
@@ -51,7 +51,7 @@ class Check < CloudstackNagios::Base
          options[:warning],
          options[:critical]
       )
-      puts "storage_pool #{options[:pool_name]} #{RETURN_CODES[data[0]]} - usage = #{data[1]}% | usage=#{pool['disksizeused']} usage=#{data[1]}%"
+      puts "storage_pool #{options[:pool_name]} #{RETURN_CODES[data[0]]} - usage = #{data[1]}% | usage=#{pool['disksizeused']} usage_perc=#{data[1]}%"
       exit data[0]
    end
 
