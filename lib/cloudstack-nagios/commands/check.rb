@@ -42,11 +42,19 @@ class Check < CloudstackNagios::Base
    desc "capacity", "check capacity of storage_pool"
    option :pool_name, required: true
    option :zone
-   option :over_provisioning, type: :numeric, default: 1.0
+   option :over_provisioning, type: :numeric, default: 1.0,
+      desc: "Overprovisioning factor (only taken into account for type = NetworkFilesystem)"
    def storage_pool
       pool = client.list_storage_pools(name: options[:pool_name], zone: options[:zone]).first
+      # calculate overprovisioning only for network file systems
+      total_size = case pool['type']
+      when 'NetworkFilesystem'
+         pool['disksizetotal'] * options[:over_provisioning]
+      else
+         pool['disksizetotal']
+      end
       data = check_data(
-         pool['disksizetotal'] * options[:over_provisioning],
+         total_size,
          pool['disksizeallocated'].to_f,
          options[:warning],
          options[:critical]
