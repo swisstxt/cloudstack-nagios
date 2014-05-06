@@ -72,6 +72,7 @@ class Router < CloudstackNagios::Base
         usage = match[1]
         data = check_data(100, usage, options[:warning], options[:critical])
         puts "DISK_USAGE #{RETURN_CODES[data[0]]} (Partition #{options[:partition]}) - usage = #{data[1]}% | usage=#{data[1]}%"
+        exit data[0]
       else
         puts "DISK_USAGE UNKNOWN"
       end
