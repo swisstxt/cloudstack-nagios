@@ -31,7 +31,7 @@ define command {
 
 
 define service {
-        host_name       <%= zones.map {|zone| "Cloudstack_#{zone['name']}" }.join(',') %> 
+        hostgroup_name	     CloudstackRouter
         service_description  Cloudstack Virtual Router Memory
         display_name         Cloudstack Virtual Router Memory
         use                  Generic-Service,service-pnp
@@ -40,7 +40,7 @@ define service {
 }
 
 define service {
-        host_name       <%= zones.map {|zone| "Cloudstack_#{zone['name']}" }.join(',') %> 
+	hostgroup_name       CloudstackRouter
         service_description  Cloudstack Virtual Router CPU
         display_name         Cloudstack Virtual Router CPU
         use                  Generic-Service,service-pnp
@@ -49,7 +49,7 @@ define service {
 }
 
 define service {
-        host_name       <%= zones.map {|zone| "Cloudstack_#{zone['name']}" }.join(',') %> 
+	hostgroup_name       CloudstackRouter
         service_description  Cloudstack Virtual Router Network
         display_name         Cloudstack Virtual Router Network
         use                  Generic-Service,service-pnp
@@ -58,7 +58,7 @@ define service {
 }
 
 define service {
-        host_name       <%= zones.map {|zone| "Cloudstack_#{zone['name']}" }.join(',') %> 
+	hostgroup_name       CloudstackRouter
         service_description  Cloudstack Virtual Router RootFS rw
         display_name         Cloudstack Virtual Router RootFS rw
         use                  Generic-Service,service-pnp
@@ -67,7 +67,7 @@ define service {
 }
 
 define service {
-        host_name       <%= zones.map {|zone| "Cloudstack_#{zone['name']}" }.join(',') %> 
+	hostgroup_name       CloudstackRouter
         service_description  Cloudstack Virtual RouterDiskUsageRoot
         display_name         Cloudstack Virtual Router DiskUsage Root
         use                  Generic-Service,service-pnp
@@ -76,7 +76,7 @@ define service {
 }
 
 define service {
-        host_name       <%= zones.map {|zone| "Cloudstack_#{zone['name']}" }.join(',') %> 
+	hostgroup_name       CloudstackRouter
         service_description  Cloudstack Virtual RouterDiskUsageVar
         display_name         Cloudstack Virtual Router DiskUsage Var
         use                  Generic-Service,service-pnp
