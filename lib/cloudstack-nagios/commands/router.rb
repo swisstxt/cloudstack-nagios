@@ -58,18 +58,20 @@ class Router < CloudstackNagios::Base
   end
 
   desc "disk_usage", "check the disk space usage of the root volume"
+  option :partition, desc: "The partition to check", default: '/', aliases: '-P'
   def disk_usage
     begin
       host = systemvm_host
+      partition = options[:partition]
       proc_out = ""
       on host do |h|
-        proc_out = capture(:df, '/')
+        proc_out = capture(:df, '-l', partition)
       end
-      match = proc_out.match(/.*\s(\d+)%\s+\/$/)
+      match = proc_out.match(/.*\s(\d+)%\s.*/)
       if match
         usage = match[1]
         data = check_data(100, usage, options[:warning], options[:critical])
-        puts "DISK_USAGE #{RETURN_CODES[data[0]]} - usage = #{data[1]}% | usage=#{data[1]}%"
+        puts "DISK_USAGE #{RETURN_CODES[data[0]]} (Partition #{options[:partition]}) - usage = #{data[1]}% | usage=#{data[1]}%"
       else
         puts "DISK_USAGE UNKNOWN"
       end

@@ -7,7 +7,7 @@ define command {
 
 <% storage_pools.each do |storage_pool| -%>
 define service {
-  hostgroup_name       Cloudstack
+  host_name            Cloudstack_<%= storage_pool['zonename'] %>
   service_description  Cloudstack Storage Pool <%= storage_pool['zonename'] %> <%= storage_pool['name'] %>
   display_name         Cloudstack Storage Pool <%= storage_pool['zonename'] %> <%= storage_pool['name'] %>
   use                  Generic-Service,service-pnp

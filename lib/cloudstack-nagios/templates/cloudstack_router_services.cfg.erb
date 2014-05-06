@@ -25,12 +25,13 @@ define command {
 
 define command {
         command_name  cs-nagios_check-diskusage
-        command_line  <%= bin_path -%>cs-nagios check router disk_usage -H $HOSTADDRESS$ -w $ARG1$ -c $ARG2$ --ssh-key <%= ssh_key %> --ssh-port <%= ssh_port %> --config <%= config_file %>
+        command_line  <%= bin_path -%>cs-nagios check router disk_usage -H $HOSTADDRESS$ -w $ARG1$ -c $ARG2$ -P $ARG3$ --ssh-key <%= ssh_key %> --ssh-port <%= ssh_port %> --config <%= config_file %>
         register      1
 }
 
+
 define service {
-        hostgroup_name       Cloudstack-SystemVM
+        hostgroup_name       <%= zones.map {|zone| "Cloudstack_#{zone['name']}" }.join(',') %> 
         service_description  Cloudstack Virtual Router Memory
         display_name         Cloudstack Virtual Router Memory
         use                  Generic-Service,service-pnp
@@ -39,7 +40,7 @@ define service {
 }
 
 define service {
-        hostgroup_name       Cloudstack-SystemVM
+        hostgroup_name       <%= zones.map {|zone| "Cloudstack_#{zone['name']}" }.join(',') %> 
         service_description  Cloudstack Virtual Router CPU
         display_name         Cloudstack Virtual Router CPU
         use                  Generic-Service,service-pnp
@@ -48,7 +49,7 @@ define service {
 }
 
 define service {
-        hostgroup_name       Cloudstack-SystemVM
+        hostgroup_name       <%= zones.map {|zone| "Cloudstack_#{zone['name']}" }.join(',') %> 
         service_description  Cloudstack Virtual Router Network
         display_name         Cloudstack Virtual Router Network
         use                  Generic-Service,service-pnp
@@ -57,7 +58,7 @@ define service {
 }
 
 define service {
-        hostgroup_name       Cloudstack-SystemVM
+        hostgroup_name       <%= zones.map {|zone| "Cloudstack_#{zone['name']}" }.join(',') %> 
         service_description  Cloudstack Virtual Router RootFS rw
         display_name         Cloudstack Virtual Router RootFS rw
         use                  Generic-Service,service-pnp
@@ -66,10 +67,19 @@ define service {
 }
 
 define service {
-        hostgroup_name       Cloudstack-SystemVM
-        service_description  Cloudstack Virtual RouterDiskUsage
-        display_name         Cloudstack Virtual Router DiskUsage
+        hostgroup_name       <%= zones.map {|zone| "Cloudstack_#{zone['name']}" }.join(',') %> 
+        service_description  Cloudstack Virtual RouterDiskUsageRoot
+        display_name         Cloudstack Virtual Router DiskUsage Root
         use                  Generic-Service,service-pnp
-        check_command        cs-nagios_check-diskusage!80!90
+        check_command        cs-nagios_check-diskusage!80!90!/
+        register             1
+}
+
+define service {
+        hostgroup_name       <%= zones.map {|zone| "Cloudstack_#{zone['name']}" }.join(',') %> 
+        service_description  Cloudstack Virtual RouterDiskUsageVar
+        display_name         Cloudstack Virtual Router DiskUsage Var
+        use                  Generic-Service,service-pnp
+        check_command        cs-nagios_check-diskusage!80!90!/var
         register             1
 }

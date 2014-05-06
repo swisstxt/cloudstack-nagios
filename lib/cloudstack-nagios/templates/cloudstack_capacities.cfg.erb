@@ -10,7 +10,7 @@ define command {
 <% zones.each do |zone| -%>
   <% capacity_types.each do |cap_type, cap_values| -%>
 define service {
-        hostgroup_name       Cloudstack
+        host_name            Cloudstack_<%= zone['name'] %>
         service_description  Cloudstack <%= zone['name'] %> <%= cap_values[:name] %>
         display_name         Cloudstack <%= zone['name'] %> <%= cap_values[:method_name] %>
         use                  Generic-Service,service-pnp
