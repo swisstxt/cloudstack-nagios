@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    cloudstack-nagios (0.10.5)
+    cloudstack-nagios (0.11.4)
       cloudstack_client (~> 0.5, >= 0.5.0)
       erubis (~> 2.7.0)
       highline (~> 1.6.20)
@@ -11,7 +11,7 @@ PATH
 GEM
   remote: https://rubygems.org/
   specs:
-    cloudstack_client (0.5.0)
+    cloudstack_client (0.6.1)
     erubis (2.7.0)
     highline (1.6.21)
     json (1.8.1)

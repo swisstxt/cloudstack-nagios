@@ -29,6 +29,11 @@ define command {
         register      1
 }
 
+define command {
+        command_name  cs-nagios_check-conntrack_connections
+        command_line  <%= bin_path -%>cs-nagios check router conntrack_connections -H $HOSTADDRESS$ -w $ARG1$ -c $ARG2$ --ssh-key <%= ssh_key %> --ssh-port <%= ssh_port %> --config <%= config_file %>
+        register      1
+}
 
 define service {
         hostgroup_name	     CloudstackRouter
@@ -81,5 +86,14 @@ define service {
         display_name         Cloudstack Virtual Router DiskUsage Var
         use                  Generic-Service,service-pnp
         check_command        cs-nagios_check-diskusage!80!90!/var
+        register             1
+}
+
+define service {
+        hostgroup_name       CloudstackRouter
+        service_description  Cloudstack Virtual RouterConntrackConnections
+        display_name         Cloudstack Virtual Router Conntrack Connections
+        use                  Generic-Service,service-pnp
+        check_command        cs-nagios_check-conntrack_connections!80!90
         register             1
 }

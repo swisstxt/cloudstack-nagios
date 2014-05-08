@@ -110,6 +110,24 @@ class Router < CloudstackNagios::Base
     end
   end
 
+  desc "conntrack_connections", "check the number of conntrack connections"
+  def conntrack_connections
+    begin
+      host = systemvm_host
+      netfilter_path = "/proc/sys/net/netfilter/"
+      current, max = 0
+      on host do |h|
+        max     = capture("cat #{netfilter_path}nf_conntrack_max").to_i
+        current = capture("cat #{netfilter_path}nf_conntrack_count").to_i
+      end
+      data = check_data(max, current, options[:warning], options[:critical])
+      puts "CONNTRACK_CONNECTIONS #{RETURN_CODES[data[0]]} - usage = #{data[1]}% | usage=#{data[1]}% current=#{current.round(0)} max=#{max.round(0)}"
+      exit data[0]
+    rescue => e
+      exit_with_failure(e)
+    end
+  end
+
   no_commands do
 
     def systemvm_host
