@@ -121,7 +121,7 @@ class Router < CloudstackNagios::Base
         current = capture("cat #{netfilter_path}nf_conntrack_count").to_i
       end
       data = check_data(max, current, options[:warning], options[:critical])
-      puts "CONNTRACK_CONNECTIONS #{RETURN_CODES[data[0]]} - usage = #{data[1]}% | usage=#{data[1]}% current=#{current.round(0)} max=#{max.round(0)}"
+      puts "CONNTRACK_CONNECTIONS #{RETURN_CODES[data[0]]} - usage = #{data[1]}% (#{current.round(0)}/#{max.round(0)}) | usage=#{data[1]}% current=#{current.round(0)} max=#{max.round(0)}"
       exit data[0]
     rescue => e
       exit_with_failure(e)
