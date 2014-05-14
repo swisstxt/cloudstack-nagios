@@ -15,7 +15,8 @@ class Router < CloudstackNagios::Base
       free = values[2].to_i
       free_b = values[7].to_i
       data = check_data(total, total - free_b, options[:warning], options[:critical])
-      puts "MEMORY #{RETURN_CODES[data[0]]} - usage = #{data[1]}% | usage=#{data[1]}% total=#{total}M free=#{free}M free_wo_buffers=#{free_b}M"
+      puts "MEMORY #{RETURN_CODES[data[0]]} - usage = #{data[1]}% (#{((total - free_b)/1024.0).round(0)}/#{(total/1024.0).round(0)}MB) | \
+            usage=#{data[1]}% total=#{total}M free=#{free}M free_wo_buffers=#{free_b}M".gsub(/\s+/, " ")
       exit data[0]
     rescue => e
       exit_with_failure(e)
