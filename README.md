@@ -12,7 +12,7 @@ The following checks are supported:
 
   * Cloudstack Root Admin keys have to be used.
   * In order to connect to system VMs the private ssh key found on the Cloudstack management server under /var/lib/cloud/management/.ssh/id_rsa are required.
-  * The system vms must be reachable over SSH (default port 3922) from the nagios server executing the checks (check with 'ssh -i /var/lib/cloud/management/.ssh/id_rsa -p 3922 <router_mgmt_ip>').
+  * The system vms must be reachable on the Cloudstack Management Network over SSH (default port 3922) from the nagios server executing the checks (check with 'ssh -i /var/lib/cloud/management/.ssh/id_rsa -p 3922 <router_mgmt_ip>').
 
 ## Installation
 
