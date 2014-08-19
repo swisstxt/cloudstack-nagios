@@ -32,7 +32,7 @@ class Router < CloudstackNagios::Base
         mpstat_output = capture(:mpstat)
       end
       values = mpstat_output.scan(/\d+\.\d+/)
-      usage = 100 - values[-1].to_f 
+      usage = 100 - values[-1].to_f
       data = check_data(100, usage, options[:warning], options[:critical])
       puts "CPU #{RETURN_CODES[data[0]]} - usage = #{data[1]}% | usage=#{data[1]}%"
       exit data[0]
@@ -45,17 +45,20 @@ class Router < CloudstackNagios::Base
   def rootfs_rw
     begin
       host = systemvm_host
-      proc_out = ""
+      test_file = '/rootdiskcheck.txt'
+      rootfs_rw = false
       on host do |h|
-        proc_out = capture(:cat, '/proc/mounts')
+        rootfs_rw = execute(:touch, test_file)
+        execute(:rm, '-f', test_file)
       end
-      rootfs_rw = proc_out.match(/rootfs\srw\s/)
-      status = rootfs_rw ? 0 : 2
-      puts "ROOTFS_RW #{rootfs_rw ? 'OK - rootfs writeable' : 'CRITICAL - rootfs NOT writeable'}"
-      exit status
+    rescue SSHKit::Command::Failed
+      rootfs_rw = false
     rescue => e
       exit_with_failure(e)
     end
+    status = rootfs_rw ? 0 : 2
+    puts "ROOTFS_RW #{rootfs_rw ? 'OK - rootfs writeable' : 'CRITICAL - rootfs NOT writeable'}"
+    exit status
   end
 
   desc "disk_usage", "check the disk space usage of the root volume"
