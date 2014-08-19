@@ -138,6 +138,36 @@ class Router < CloudstackNagios::Base
     end
   end
 
+  desc "active_ftp", "make sure conntrack_ftp and nf_nat_ftp modules are loaded"
+  def active_ftp
+    begin
+      host = systemvm_host
+      active_ftp_enabled = false
+      modules = %w(nf_conntrack_ftp, nf_nat_ftp)
+      on host do |h|
+        lsmod = capture(:lsmod)
+        active_ftp_enabled = lsmod.include?('nf_conntrack_ftp') &&
+          lsmod.include?('nf_nat_ftp')
+        unless active_ftp_enabled
+          # load the modules in the kernel
+          execute(:modprobe, 'nf_conntrack_ftp')
+          execute(:modprobe, 'nf_nat_ftp')
+          # load the modules at next server boot
+          execute(:echo, '"nf_conntrack_ftp" >> /etc/modules')
+          execute(:echo, '"nf_nat_ftp" >> /etc/modules')
+          active_ftp_enabled = true
+        end
+      end
+    rescue SSHKit::Command::Failed
+      active_ftp_enabled = false
+    rescue => e
+      exit_with_failure(e)
+    end
+    status = active_ftp_enabled ? 0 : 2
+    puts "ACTIVE_FTP #{active_ftp_enabled ? 'OK - active_ftp enabled' : 'CRITICAL - active_ftp NOT enabled'}"
+    exit status
+  end
+
   no_commands do
 
     def systemvm_host

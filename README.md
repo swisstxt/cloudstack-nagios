@@ -57,7 +57,7 @@ See the help screen:
 $ cs-nagios
 ```
 
-### Generate all Nagios configuration files at once 
+### Generate all Nagios configuration files at once
 
 Generate all configuration files:
 
@@ -86,12 +86,14 @@ For all vm checks access to the cloudstack management network is required in ord
 #### Check system vms over ssh
 
 The following checks are available:
-  
+
    * memory - measure memory usage in percents
    * cpu - measure cpu usage in percent
    * network - measure network usage
    * rootfs_rw - check if the root file system is writeable
    * disk_usage - check the diks space usage of the root volume
+   * conntrack_connections, check the number of conntrack connections and set proper limits if needed
+   * active_ftp - make sure conntrack_ftp and nf_nat_ftp modules are loaded and enable it if needed
 
 Example:
 
