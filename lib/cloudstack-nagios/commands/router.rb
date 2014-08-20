@@ -175,6 +175,8 @@ class Router < CloudstackNagios::Base
         say "Error: --host/-H option is required for this check.", :red
         exit 1
       end
+      # suppress sshkit output to stdout
+      SSHKit.config.output_verbosity = Logger::FATAL
       host = SSHKit::Host.new("root@#{options[:host]}")
       host.ssh_options = sshoptions(options[:ssh_key])
       host.port = options[:ssh_port]

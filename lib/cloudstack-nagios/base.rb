@@ -2,11 +2,11 @@ require "thor"
 require "yaml"
 require 'cloudstack_client'
 
-module CloudstackNagios 
+module CloudstackNagios
   class Base < Thor
     include Thor::Actions
     include CloudstackNagios::Helper
-    
+
     attr_reader :config
 
     # catch control-c and exit
@@ -20,7 +20,7 @@ module CloudstackNagios
       true
     end
 
-    no_commands do  
+    no_commands do
       def client(opts = {})
         @config ||= load_configuration
         @client ||= CloudstackClient::Connection.new(
