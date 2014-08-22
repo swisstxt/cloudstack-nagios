@@ -1,5 +1,7 @@
 # Cloudstack Nagios
 
+[![Gem Version](https://badge.fury.io/rb/cloudstack-nagios.svg)](http://badge.fury.io/rb/cloudstack-nagios)
+
 Cloudstack Nagios helps you monitoring your Cloudstack environment with Nagios.
 Cloudstack Nagios uses the Cloudstack API to collect information about system vm's and ressources.
 
