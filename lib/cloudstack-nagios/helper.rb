@@ -1,7 +1,7 @@
 module CloudstackNagios
   module Helper
     RETURN_CODES = {0 => 'ok', 1 => 'warning', 2 => 'critical'}
-    
+
     def load_template(template_path)
       if File.file?(template_path)
         templ = Erubis::Eruby.new(File.read template_path)
@@ -19,7 +19,7 @@ module CloudstackNagios
     end
 
     def storage_pools
-      storage_pools = client.list_storage_pools.select do |pool| 
+      storage_pools = client.list_storage_pools.select do |pool|
         pool['state'].downcase == 'up'
       end
     end
@@ -34,13 +34,13 @@ module CloudstackNagios
     end
 
     def check_data(total, usage, warning, critical)
-      usage_percent = 100.0 / total.to_f * usage.to_f
+      usage_percent = (100.0 / total.to_f * usage.to_f) || 0.0
       code = 3
       if usage_percent < warning
         code = 0
       elsif usage_percent < critical
         code = 1
-      else 
+      else
         code = 2
       end
       [code, usage_percent.round(0)]
