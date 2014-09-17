@@ -1,0 +1,3 @@
+class SecStorVm < SystemVm
+
+end

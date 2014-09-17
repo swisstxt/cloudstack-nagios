@@ -1,4 +1,4 @@
-require "cloudstack-nagios/commands/router"
+require "cloudstack-nagios/commands/system_vm"
 require "cloudstack-nagios/commands/capacity"
 
 class Check < CloudstackNagios::Base
@@ -32,6 +32,12 @@ class Check < CloudstackNagios::Base
 
    desc "router SUBCOMMAND ...ARGS", "router checks"
    subcommand :router, Router
+
+   desc "sec_stor_vm SUBCOMMAND ...ARGS", "secondary storage vm checks"
+   subcommand :sec_stor_vm, SecStorVm
+
+   desc "console_proxy SUBCOMMAND ...ARGS", "console proxy checks"
+   subcommand :console_proxy, ConsoleProxy
 
    desc "capacity SUBCOMMAND ...ARGS", "capacity checks"
    subcommand :capacity, Capacity
@@ -81,9 +87,9 @@ class Check < CloudstackNagios::Base
         code = 0
       elsif outstanding_jobs.size < options[:critical]
         code = 1
-      else 
+      else
         code = 2
-      end 
+      end
       puts "async_jobs #{RETURN_CODES[code]} - jobs = #{outstanding_jobs.size} | jobs=#{outstanding_jobs.size}"
    end
 end

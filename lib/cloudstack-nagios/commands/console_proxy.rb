@@ -1,0 +1,3 @@
+class ConsoleProxy < SystemVm
+
+end
