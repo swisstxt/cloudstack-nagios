@@ -88,9 +88,9 @@ For all vm checks access to the cloudstack management network is required in ord
 #### Types
 
 There are 3 different types of system vm's:
-   * routers `cs-nagios check router`
-   * secondary storage vms `cs-nagios check sec_stor_vm`
-   * console proxies `cs-nagios check console_proxy`
+   * routers: `cs-nagios check router`
+   * secondary storage vms: `cs-nagios check sec_stor_vm`
+   * console proxies: `cs-nagios check console_proxy`
 
 #### Checks
 
