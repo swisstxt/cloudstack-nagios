@@ -85,22 +85,33 @@ storage_pools
 
 For all vm checks access to the cloudstack management network is required in order to run the ckecks via ssh or snmp.
 
-#### Check system vms over ssh
+#### Types
+
+There are 3 different types of system vm's:
+   * routers `cs-nagios check router`
+   * secondary storage vms `cs-nagios check sec_stor_vm`
+   * console proxies `cs-nagios check console_proxy`
+
+#### Checks
 
 The following checks are available:
 
+General Checks
    * memory - measure memory usage in percents
    * cpu - measure cpu usage in percent
    * network - measure network usage
-   * rootfs_rw - check if the root file system is writeable
+   * fs_rw - check if the root file system is writeable
+   * rootfs_rw - check if the root file system is writeable (wrapper for fs_rw with mount point /)
    * disk_usage - check the diks space usage of the root volume
+
+Checks for routers
    * conntrack_connections, check the number of conntrack connections and set proper limits if needed
    * active_ftp - make sure conntrack_ftp and nf_nat_ftp modules are loaded and enable it if needed
 
 Example:
 
 ```sh
-$ cs-nagios check system_vm network --host 10.100.9.161
+$ cs-nagios check router network --host 10.100.9.161
 ```
 
 #### Enabling snmpd checks for system vms
