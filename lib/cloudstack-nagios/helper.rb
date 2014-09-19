@@ -18,6 +18,10 @@ module CloudstackNagios
       routers += client.list_routers(projectid: -1, status: 'Running')
     end
 
+    def cs_system_vms
+      vms = client.list_system_vms
+    end
+
     def storage_pools
       storage_pools = client.list_storage_pools.select do |pool|
         pool['state'].downcase == 'up'

@@ -31,6 +31,7 @@ class NagiosConfig < CloudstackNagios::Base
     end
 
     routers = configs.include?("router_hosts") ? cs_routers : nil
+    system_vms = configs.include?("system_vm_hosts") ? cs_system_vms : nil
     pools = configs.include?("storage_pools") ? storage_pools : nil
     zones = client.list_zones
     config_name = configs.size == 1 ?
@@ -51,6 +52,7 @@ class NagiosConfig < CloudstackNagios::Base
       template = load_template(tmpl_file)
       output += template.result(
         routers: routers,
+        system_vms: system_vms,
         bin_path: bin_path,
         if_speed: options[:if_speed],
         config_file: options[:config],
@@ -78,7 +80,7 @@ class NagiosConfig < CloudstackNagios::Base
   no_commands do
 
     def get_configs(configs = [])
-      all_configs = %w(hostgroups zone_hosts router_hosts router_services capacities async_jobs storage_pools)
+      all_configs = %w(hostgroups zone_hosts router_hosts router_services system_vm_hosts system_vm_services capacities async_jobs storage_pools)
       if configs.size == 0
         return all_configs
       else

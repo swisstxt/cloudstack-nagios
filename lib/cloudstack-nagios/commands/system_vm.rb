@@ -189,7 +189,3 @@ class SystemVm < CloudstackNagios::Base
   end
 
 end
-
-require "cloudstack-nagios/commands/router"
-require "cloudstack-nagios/commands/sec_stor_vm"
-require "cloudstack-nagios/commands/console_proxy"

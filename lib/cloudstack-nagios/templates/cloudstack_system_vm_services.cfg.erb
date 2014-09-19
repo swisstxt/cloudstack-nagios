@@ -1,0 +1,84 @@
+
+define command {
+        command_name  cs-nagios_check_systemvm-memory
+        command_line  <%= bin_path -%>cs-nagios check system_vm memory -H $HOSTADDRESS$ -w $ARG1$ -c $ARG2$ --ssh-key <%= ssh_key %> --ssh-port <%= ssh_port %> --config <%= config_file %>
+        register      1
+}
+
+define command {
+        command_name  cs-nagios_check_systemvm-cpu
+        command_line  <%= bin_path -%>cs-nagios check system_vm cpu -H $HOSTADDRESS$ -w $ARG1$ -c $ARG2$ --ssh-key <%= ssh_key %> --ssh-port <%= ssh_port %> --config <%= config_file %>
+        register      1
+}
+
+define command {
+        command_name  cs-nagios_check_systemvm-network
+        command_line  <%= bin_path -%>cs-nagios check system_vm network -H $HOSTADDRESS$ -w $ARG1$ -c $ARG2$ --if-speed <%= if_speed %> --ssh-key <%= ssh_key %> --ssh-port <%= ssh_port %> --config <%= config_file %>
+        register      1
+}
+
+define command {
+        command_name  cs-nagios_check_systemvm-fsrw
+        command_line  <%= bin_path -%>cs-nagios check system_vm fs_rw -H $HOSTADDRESS$ -w $ARG1$ -c $ARG2$ --ssh-key <%= ssh_key %> --ssh-port <%= ssh_port %> --config <%= config_file %>
+        register      1
+}
+
+define command {
+        command_name  cs-nagios_check_systemvm-diskusage
+        command_line  <%= bin_path -%>cs-nagios check system_vm disk_usage -H $HOSTADDRESS$ -w $ARG1$ -c $ARG2$ -P $ARG3$ --ssh-key <%= ssh_key %> --ssh-port <%= ssh_port %> --config <%= config_file %>
+        register      1
+}
+
+define service {
+        hostgroup_name	     CloudstackSystemVm
+        service_description  Cloudstack Virtual System VM Memory
+        display_name         Cloudstack Virtual System VM Memory
+        use                  Generic-Service,service-pnp
+        check_command        cs-nagios_check_systemvm-memory!80!90
+        register             1
+}
+
+define service {
+        hostgroup_name       CloudstackSystemVm
+        service_description  Cloudstack Virtual System VM CPU
+        display_name         Cloudstack Virtual System VM CPU
+        use                  Generic-Service,service-pnp
+        check_command        cs-nagios_check_systemvm-cpu!80!90
+        register             1
+}
+
+define service {
+        hostgroup_name       CloudstackSystemVm
+        service_description  Cloudstack Virtual System VM Network
+        display_name         Cloudstack Virtual System VM Network
+        use                  Generic-Service,service-pnp
+        check_command        cs-nagios_check_systemvm-network!80!90
+        register             1
+}
+
+define service {
+        hostgroup_name       CloudstackSystemVm
+        service_description  Cloudstack Virtual System VM RootFS rw
+        display_name         Cloudstack Virtual System VM RootFS rw
+        use                  Generic-Service,service-pnp
+        check_command        cs-nagios_check_systemvm-rootfsrw!80!90
+        register             1
+}
+
+define service {
+        hostgroup_name       CloudstackSystemVm
+        service_description  Cloudstack Virtual System VM DiskUsageRoot
+        display_name         Cloudstack Virtual System VM DiskUsage Root
+        use                  Generic-Service,service-pnp
+        check_command        cs-nagios_check_systemvm-diskusage!80!90!/
+        register             1
+}
+
+define service {
+        hostgroup_name       CloudstackSystemVm
+        service_description  Cloudstack Virtual System VMDiskUsageVar
+        display_name         Cloudstack Virtual System VM DiskUsage Var
+        use                  Generic-Service,service-pnp
+        check_command        cs-nagios_check_systemvm-diskusage!80!90!/var
+        register             1
+}

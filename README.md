@@ -76,6 +76,8 @@ hostgroups
 zone_hosts
 router_hosts
 router_services
+system_vm_hosts
+system_vm_services
 capacities
 async_jobs
 storage_pools
@@ -87,10 +89,9 @@ For all vm checks access to the cloudstack management network is required in ord
 
 #### Types
 
-There are 3 different types of system vm's:
+cloudstack-nagios differentiates between 2 different types of system vm's:
    * routers: `cs-nagios check router`
-   * secondary storage vms: `cs-nagios check sec_stor_vm`
-   * console proxies: `cs-nagios check console_proxy`
+   * secondary storage vms and console proxies: `cs-nagios check system_vm`
 
 #### Checks
 
@@ -108,10 +109,11 @@ Checks for routers
    * conntrack_connections, check the number of conntrack connections and set proper limits if needed
    * active_ftp - make sure conntrack_ftp and nf_nat_ftp modules are loaded and enable it if needed
 
-Example:
+Examples:
 
 ```sh
-$ cs-nagios check router network --host 10.100.9.161
+$ cs-nagios check system_vm network --host 10.100.9.161
+$ cs-nagios check router active_ftp --host 10.100.9.177
 ```
 
 #### Enabling snmpd checks for system vms

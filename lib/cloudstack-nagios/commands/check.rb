@@ -1,4 +1,5 @@
 require "cloudstack-nagios/commands/system_vm"
+require "cloudstack-nagios/commands/router"
 require "cloudstack-nagios/commands/capacity"
 
 class Check < CloudstackNagios::Base
@@ -33,19 +34,13 @@ class Check < CloudstackNagios::Base
    desc "router SUBCOMMAND ...ARGS", "router checks"
    subcommand :router, Router
 
-   desc "sec_stor_vm SUBCOMMAND ...ARGS", "secondary storage vm checks"
-   subcommand :sec_stor_vm, SecStorVm
-
-   desc "console_proxy SUBCOMMAND ...ARGS", "console proxy checks"
-   subcommand :console_proxy, ConsoleProxy
+   desc "system_vm SUBCOMMAND ...ARGS", "system vm checks"
+   subcommand :system_vm, SystemVm
 
    desc "capacity SUBCOMMAND ...ARGS", "capacity checks"
    subcommand :capacity, Capacity
 
-   desc "storage_pool SUBCOMMAND ...ARGS", "storage_pool checks"
-   subcommand :capacity, Capacity
-
-   desc "capacity", "check capacity of storage_pool"
+   desc "storage_pool", "check capacity of storage_pool"
    option :pool_name, required: true
    option :zone
    option :over_provisioning, type: :numeric, default: 1.0,

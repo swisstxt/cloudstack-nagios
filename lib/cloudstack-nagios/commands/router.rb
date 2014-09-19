@@ -1,8 +1,10 @@
+require "cloudstack-nagios/commands/system_vm"
+
 class Router < SystemVm
 
   desc "rootfs_rw", "check if the rootfs is read/writeable on host"
   def rootfs_rw
-    fs_rw(mount_point: '/')
+    invoke :fs_rw
   end
 
   desc "conntrack_connections", "check the number of conntrack connections"
