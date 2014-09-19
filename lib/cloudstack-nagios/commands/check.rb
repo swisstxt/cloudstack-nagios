@@ -40,7 +40,7 @@ class Check < CloudstackNagios::Base
    desc "capacity SUBCOMMAND ...ARGS", "capacity checks"
    subcommand :capacity, Capacity
 
-   desc "storage_pool", "check capacity of storage_pool"
+   desc "storage_pool", "check capacity of storage pools"
    option :pool_name, required: true
    option :zone
    option :over_provisioning, type: :numeric, default: 1.0,
