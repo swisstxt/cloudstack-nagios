@@ -58,10 +58,10 @@ define service {
 
 define service {
         hostgroup_name       CloudstackSystemVm
-        service_description  Cloudstack Virtual System VM RootFS rw
-        display_name         Cloudstack Virtual System VM RootFS rw
+        service_description  Cloudstack Virtual System VM FS r/w
+        display_name         Cloudstack Virtual System VM FS r/w
         use                  Generic-Service,service-pnp
-        check_command        cs-nagios_check_systemvm-rootfsrw!80!90
+        check_command        cs-nagios_check_systemvm-fsrw!80!90
         register             1
 }
 
