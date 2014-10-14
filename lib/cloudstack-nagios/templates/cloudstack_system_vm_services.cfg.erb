@@ -29,8 +29,6 @@ define command {
         register      1
 }
 
-cs-nagios_check_systemvm-secstorrw
-
 define command {
         command_name  cs-nagios_check_systemvm-secstorrw
         command_line  <%= bin_path -%>cs-nagios check system_vm secstor_rw -H $HOSTADDRESS$ -w $ARG1$ -c $ARG2$ -P $ARG3$ --ssh-key <%= ssh_key %> --ssh-port <%= ssh_port %> --config <%= config_file %>
