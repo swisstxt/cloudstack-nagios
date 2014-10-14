@@ -29,10 +29,18 @@ define command {
         register      1
 }
 
+cs-nagios_check_systemvm-secstorrw
+
+define command {
+        command_name  cs-nagios_check_systemvm-secstorrw
+        command_line  <%= bin_path -%>cs-nagios check system_vm secstor_rw -H $HOSTADDRESS$ -w $ARG1$ -c $ARG2$ -P $ARG3$ --ssh-key <%= ssh_key %> --ssh-port <%= ssh_port %> --config <%= config_file %>
+        register      1
+}
+
 define service {
         hostgroup_name	     CloudstackSystemVm
-        service_description  Cloudstack Virtual System VM Memory
-        display_name         Cloudstack Virtual System VM Memory
+        service_description  Cloudstack System VM Memory
+        display_name         Cloudstack System VM Memory
         use                  Generic-Service,service-pnp
         check_command        cs-nagios_check_systemvm-memory!80!90
         register             1
@@ -40,8 +48,8 @@ define service {
 
 define service {
         hostgroup_name       CloudstackSystemVm
-        service_description  Cloudstack Virtual System VM CPU
-        display_name         Cloudstack Virtual System VM CPU
+        service_description  Cloudstack System VM CPU
+        display_name         Cloudstack System VM CPU
         use                  Generic-Service,service-pnp
         check_command        cs-nagios_check_systemvm-cpu!80!90
         register             1
@@ -49,8 +57,8 @@ define service {
 
 define service {
         hostgroup_name       CloudstackSystemVm
-        service_description  Cloudstack Virtual System VM Network
-        display_name         Cloudstack Virtual System VM Network
+        service_description  Cloudstack System VM Network
+        display_name         Cloudstack System VM Network
         use                  Generic-Service,service-pnp
         check_command        cs-nagios_check_systemvm-network!80!90
         register             1
@@ -58,8 +66,8 @@ define service {
 
 define service {
         hostgroup_name       CloudstackSystemVm
-        service_description  Cloudstack Virtual System VM FS r/w
-        display_name         Cloudstack Virtual System VM FS r/w
+        service_description  Cloudstack System VM FS r/w
+        display_name         Cloudstack System VM FS r/w
         use                  Generic-Service,service-pnp
         check_command        cs-nagios_check_systemvm-fsrw!80!90
         register             1
@@ -67,8 +75,8 @@ define service {
 
 define service {
         hostgroup_name       CloudstackSystemVm
-        service_description  Cloudstack Virtual System VM DiskUsageRoot
-        display_name         Cloudstack Virtual System VM DiskUsage Root
+        service_description  Cloudstack System VM DiskUsageRoot
+        display_name         Cloudstack System VM DiskUsage Root
         use                  Generic-Service,service-pnp
         check_command        cs-nagios_check_systemvm-diskusage!80!90!/
         register             1
@@ -76,9 +84,18 @@ define service {
 
 define service {
         hostgroup_name       CloudstackSystemVm
-        service_description  Cloudstack Virtual System VMDiskUsageVar
-        display_name         Cloudstack Virtual System VM DiskUsage Var
+        service_description  Cloudstack System VM DiskUsageVar
+        display_name         Cloudstack System VM DiskUsage Var
         use                  Generic-Service,service-pnp
         check_command        cs-nagios_check_systemvm-diskusage!80!90!/var
+        register             1
+}
+
+define service {
+        hostgroup_name       CloudstackSSVM
+        service_description  Cloudstack SSVM SecondaryStorageRW
+        display_name         Cloudstack SSVM SecondaryStorageRW
+        use                  Generic-Service,service-pnp
+        check_command        cs-nagios_check_systemvm-secstorrw!80!90!
         register             1
 }

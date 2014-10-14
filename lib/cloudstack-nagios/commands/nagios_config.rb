@@ -80,7 +80,7 @@ class NagiosConfig < CloudstackNagios::Base
   no_commands do
 
     def get_configs(configs = [])
-      all_configs = %w(hostgroups zone_hosts router_hosts router_services system_vm_hosts system_vm_services capacities async_jobs storage_pools)
+      all_configs = %w(hostgroups zone_hosts router_hosts router_services system_vm_hosts system_vm_services capacities async_jobs snapshots storage_pools)
       if configs.size == 0
         return all_configs
       else

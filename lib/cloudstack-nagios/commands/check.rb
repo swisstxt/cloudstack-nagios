@@ -86,5 +86,44 @@ class Check < CloudstackNagios::Base
         code = 2
       end
       puts "async_jobs #{RETURN_CODES[code]} - jobs = #{outstanding_jobs.size} | jobs=#{outstanding_jobs.size}"
+      exit code
+   end
+
+   desc "snapshots", "check for failed snapshots (not in state 'BakedUp' for x hours)"
+   option :warning,
+      desc: 'warning level',
+      type: :numeric,
+      default: 12,
+      aliases: '-w'
+   option :critical,
+      desc: 'critical level',
+      type: :numeric,
+      default: 24,
+      aliases: '-c'
+   def snapshots
+     snapshots = []
+     snapshots << client.send_request('command' => 'listSnapshots', 'projectid' => '-1')['snapshot']
+     snapshots << client.send_request('command' => 'listSnapshots')['snapshot']
+     snapshots.compact!.flatten!
+     not_backed_up = snapshots.select{|s| s['state'] != 'BackedUp' }
+
+     warnings = []
+     critical = []
+
+     not_backed_up.each do |s|
+       age = (Time.now - Time.parse(s['created'])) / 3600
+       warnings << s if age > options[:warning]
+       critical << s if age > options[:critical]
+     end
+
+     code = if critical.size > 0
+       2
+     elsif warnings.size > 0
+       1
+     else
+       0
+     end
+     puts "snapshots #{RETURN_CODES[code]} - warnings = #{warnings.size}, critical = #{critical.size} | warnings=#{warnings.size} critical=#{critical.size}"
+     exit code
    end
 end

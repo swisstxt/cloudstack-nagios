@@ -1,0 +1,15 @@
+
+define command {
+        command_name         cs-nagios_check-snapshots
+        command_line         <%= bin_path -%>cs-nagios check snapshots -w $ARG1$ -c $ARG2$ --config <%= config_file %>
+        register             1
+}
+
+define service {
+        hostgroup_name       Cloudstack
+        service_description  Cloudstack Snapshots
+        display_name         Cloudstack Snapshots
+        use                  Generic-Service,service-pnp
+        check_command        cs-nagios_check-snapshots!12!24
+        register             1
+}

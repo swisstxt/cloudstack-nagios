@@ -79,7 +79,7 @@ define service {
 
 define service {
 	hostgroup_name       CloudstackRouter
-        service_description  Cloudstack Virtual RouterDiskUsageRoot
+        service_description  Cloudstack Virtual Router DiskUsageRoot
         display_name         Cloudstack Virtual Router DiskUsage Root
         use                  Generic-Service,service-pnp
         check_command        cs-nagios_check-diskusage!80!90!/
@@ -88,7 +88,7 @@ define service {
 
 define service {
 	hostgroup_name       CloudstackRouter
-        service_description  Cloudstack Virtual RouterDiskUsageVar
+        service_description  Cloudstack Virtual Router DiskUsageVar
         display_name         Cloudstack Virtual Router DiskUsage Var
         use                  Generic-Service,service-pnp
         check_command        cs-nagios_check-diskusage!80!90!/var
@@ -97,7 +97,7 @@ define service {
 
 define service {
         hostgroup_name       CloudstackRouter
-        service_description  Cloudstack Virtual RouterConntrackConnections
+        service_description  Cloudstack Virtual Router ConntrackConnections
         display_name         Cloudstack Virtual Router Conntrack Connections
         use                  Generic-Service,service-pnp
         check_command        cs-nagios_check-conntrack_connections!80!90
@@ -106,8 +106,8 @@ define service {
 
 define service {
         hostgroup_name       CloudstackRouter
-        service_description  Cloudstack Virtual RouterActiveFTP
-        display_name         Cloudstack Virtual RouterActiveFTP
+        service_description  Cloudstack Virtual Router ActiveFTP
+        display_name         Cloudstack Virtual Router ActiveFTP
         use                  Generic-Service,service-pnp
         check_command        cs-nagios_check-active_ftp
         register             1

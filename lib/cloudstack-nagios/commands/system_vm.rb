@@ -69,12 +69,13 @@ class SystemVm < CloudstackNagios::Base
     host = systemvm_host
     mounts = {}
     on host do |h|
-      capture(:mount, '|grep SecStorage').each_line do |nfs_mount|
+      entries = capture(:mount, '|grep -cim1 SecStorage') rescue ''
+      entries.each_line do |nfs_mount|
         mount_point = nfs_mount[/.* on (.*) type .*/, 1]
         test_file = File.join(mount_point, 'cs_nagios_diskcheck.txt')
         fs_rw = execute(:touch, test_file) rescue false
         mounts[mount_point] = fs_rw
-        execute(:rm, '-f', test_file)
+        execute(:rm, '-f', test_file) if fs_rw
       end
     end
     fs_ro = mounts.select {|key,value| value != true}

@@ -155,6 +155,16 @@ Example:
 $ cs-nagios check async_jobs
 ```
 
+### Snapshot checks
+
+Checks for snapshots which are not in state 'BakedUp' for a certain amount of time.
+
+Example:
+
+```sh
+$ cs-nagios check snapshots
+```
+
 ## References
 
   * [Cloudstack API documentation](http://cloudstack.apache.org/docs/api/apidocs-4.2/TOC_Root_Admin.html)

@@ -10,6 +10,6 @@ define service {
         service_description  Cloudstack Async Jobs
         display_name         Cloudstack Async Jobs
         use                  Generic-Service,service-pnp
-        check_command        cs-nagios_check-asyncjobs!80!90
+        check_command        cs-nagios_check-asyncjobs!5!10
         register             1
 }
