@@ -41,12 +41,12 @@ class SystemVm < CloudstackNagios::Base
     end
   end
 
-  desc "fs_rw", "check if the rootfs is read/writeable on host"
+  desc "fs_rw", "check if a certain mount point is read/writeable on host"
   option :mount_point, desc: "The mount point to check", default: '/', aliases: '-m'
   def fs_rw
     begin
       host = systemvm_host
-      test_file = File.join(options[:mount_point], 'rootdiskcheck.txt')
+      test_file = File.join(options[:mount_point], 'cs_nagios_diskcheck.txt')
       fs_rw = false
       on host do |h|
         fs_rw = execute(:touch, test_file)
@@ -58,10 +58,33 @@ class SystemVm < CloudstackNagios::Base
       exit_with_failure(e)
     end
     status = fs_rw ? 0 : 2
-    puts "FS_RW #{fs_rw ?
+    puts fs_rw ?
       "OK - file system (#{options[:mount_point]}) writeable" :
-      "CRITICAL - file system (#{options[:mount_point]}) NOT writeable"}"
+      "CRITICAL - file system (#{options[:mount_point]}) NOT writeable"
     exit status
+  end
+
+  desc "secstor_rw", "check if all secstorage mounts are read/writeable on host"
+  def secstor_rw
+    host = systemvm_host
+    mounts = {}
+    on host do |h|
+      capture(:mount, '|grep SecStorage').each_line do |nfs_mount|
+        mount_point = nfs_mount[/.* on (.*) type .*/, 1]
+        test_file = File.join(mount_point, 'cs_nagios_diskcheck.txt')
+        fs_rw = execute(:touch, test_file) rescue false
+        mounts[mount_point] = fs_rw
+        execute(:rm, '-f', test_file)
+      end
+    end
+    fs_ro = mounts.select {|key,value| value != true}
+    status = fs_ro.size == 0 ? 0 : 2
+    puts status == 0 ?
+      "OK - all sec_stor mounts are writeable" :
+      "CRITICAL - some sec_stor mounts are NOT writeable (#{fs_ro.keys.join(', ')})"
+    exit status
+  rescue => e
+    exit_with_failure(e)
   end
 
   desc "disk_usage", "check the disk space usage of the root volume"
