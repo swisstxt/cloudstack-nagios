@@ -4,7 +4,7 @@ module CloudstackNagios
   class Cli < CloudstackNagios::Base
     include Thor::Actions
 
-    package_name "cloudstack-nagios" 
+    package_name "cloudstack-nagios"
     map %w(-v --version) => :version
 
     class_option :config,
@@ -82,12 +82,15 @@ module CloudstackNagios
     map :envs => :environments
 
     # require subcommands
-    Dir[File.dirname(__FILE__) + '/commands/*.rb'].each do |command| 
+    Dir[File.dirname(__FILE__) + '/commands/*.rb'].each do |command|
       require command
     end
 
     desc "nagios_config SUBCOMMAND ...ARGS", "Nagios configuration commands"
     subcommand :nagios_config, NagiosConfig
+
+    desc "icinga2_config SUBCOMMAND ...ARGS", "Icinga2 configuration commands"
+    subcommand :icinga2_config, Icinga2Config
 
     desc "snmpd_config SUBCOMMAND ...ARGS", "snmpd configuration commands"
     subcommand :snmpd_config, SnmpdConfig

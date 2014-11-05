@@ -1,0 +1,15 @@
+
+<% system_vms.each do |vm| -%>
+  <% if vm['privateip'] -%>
+define host {
+  host_name      <%= vm['name'] %>
+  display_name   <%= vm['name'] %> (<%= vm['privateip'] %>) - <%= vm['zonename'] %>
+  address        <%= vm['privateip'] %>
+  use            Linux-Host,host-pnp
+  hostgroups     CloudstackSystemVm<%= ',CloudstackSSVM' if vm['systemvmtype'] == 'secondarystoragevm' %>
+  check_command  check-host-alive
+  register       1
+}
+
+  <% end -%>
+<% end -%>
