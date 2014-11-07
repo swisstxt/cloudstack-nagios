@@ -1,18 +1,24 @@
 
-define command {
-  command_name  cs-nagios_check-storage_pool
-  command_line  <%= bin_path -%>cs-nagios check storage_pool --pool_name $ARG3$ --over_provisioning $ARG4$ -w $ARG1$ -c $ARG2$ --config <%= config_file %>
-  register      1
+object CheckCommand "cs-nagios_check-storage_pool" {
+	import "plugin-check-command"
+  	command = [  "<%= bin_path -%>cs-nagios check storage_pool" ]
+  	arguments = {
+                "--pool_name" = "$ARG3$"
+                "--over_provisioning" = "ARG4"
+                "--config" = "<%= config_file %>"
+                "-w" = "80"
+                "-c" = "90"
+  	}      
 }
 
 <% storage_pools.each do |storage_pool| -%>
-define service {
-  host_name            Cloudstack_<%= storage_pool['zonename'] %>
-  service_description  Cloudstack Storage Pool <%= storage_pool['zonename'] %> <%= storage_pool['name'] %>
-  display_name         Cloudstack Storage Pool <%= storage_pool['zonename'] %> <%= storage_pool['name'] %>
-  use                  Generic-Service,service-pnp
-  check_command        cs-nagios_check-storage_pool!80!90!<%= storage_pool['name'] %>!<%= over_provisioning %>
-  register             1
+apply Service "Cloudstack Storage Pool <%= storage_pool['zonename'] %> <%= storage_pool['name'] %>" {
+  import "generic-service-pnp"
+
+  check_command = "cs-nagios_check-storage_pool!80!90!<%= storage_pool['name'] %>!<%= over_provisioning %>"
+  vars.sla = "24x7"
+
+  assign where "Cloudstack_<%= storage_pool['zonename'] %>" in host.groups
 }
 
 <% end -%>

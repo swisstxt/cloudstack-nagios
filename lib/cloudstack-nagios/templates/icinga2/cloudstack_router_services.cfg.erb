@@ -1,114 +1,149 @@
 
-define command {
-        command_name  cs-nagios_check-memory
-        command_line  <%= bin_path -%>cs-nagios check router memory -H $HOSTADDRESS$ -w $ARG1$ -c $ARG2$ --ssh-key <%= ssh_key %> --ssh-port <%= ssh_port %> --config <%= config_file %>
-        register      1
+object CheckCommand "cs-nagios_check-memory" {
+	import "plugin-check-command"
+        command = [  "<%= bin_path -%>cs-nagios check router memory" ]
+
+        arguments = {
+        	"-H" = "$address$"
+  		"-w" = "80"
+  		"-c" = "90"
+                "--ssh_key" = "<%= ssh_key %>"
+ 		"--ssh-port" = "<%= ssh_port %>"
+		"--config" = "<%= config_file %>"
+	}
 }
 
-define command {
-        command_name  cs-nagios_check-cpu
-        command_line  <%= bin_path -%>cs-nagios check router cpu -H $HOSTADDRESS$ -w $ARG1$ -c $ARG2$ --ssh-key <%= ssh_key %> --ssh-port <%= ssh_port %> --config <%= config_file %>
-        register      1
+object CheckCommand "cs-nagios_check-cpu" {
+	import "plugin-check-command"
+        command = [ "<%= bin_path -%>cs-nagios check router cpu" ] 
+
+        arguments = {
+                "-H" = "$address$"
+                "-w" = "80"
+                "-c" = "90"
+                "--ssh_key" = "<%= ssh_key %>"
+                "--ssh-port" = "<%= ssh_port %>"
+                "--config" = "<%= config_file %>"
+	}
 }
 
-define command {
-        command_name  cs-nagios_check-network
-        command_line  <%= bin_path -%>cs-nagios check router network -H $HOSTADDRESS$ -w $ARG1$ -c $ARG2$ --if-speed <%= if_speed %> --ssh-key <%= ssh_key %> --ssh-port <%= ssh_port %> --config <%= config_file %>
-        register      1
+object CheckCommand "cs-nagios_check-network" {
+	import "plugin-check-command"
+        command = [  "<%= bin_path -%>cs-nagios check router network"  ]
+
+        arguments = {
+                "-H" = "$address$"
+                "-w" = "80"
+                "-c" = "90"
+		"--if-speed" = "<%= if_speed %>"
+                "--ssh_key" = "<%= ssh_key %>"
+                "--ssh-port" = "<%= ssh_port %>"
+                "--config" = "<%= config_file %>"
+	}
 }
 
-define command {
-        command_name  cs-nagios_check-rootfsrw
-        command_line  <%= bin_path -%>cs-nagios check router rootfs_rw -H $HOSTADDRESS$ -w $ARG1$ -c $ARG2$ --ssh-key <%= ssh_key %> --ssh-port <%= ssh_port %> --config <%= config_file %>
-        register      1
+object CheckCommand "cs-nagios_check-rootfsrw" {
+	import "plugin-check-command"
+        command = [  "<%= bin_path -%>cs-nagios check router rootfs_rw" ]
+
+        arguments = {
+                "-H" = "$address$"
+                "-w" = "80"
+                "-c" = "90"
+                "--ssh_key" = "<%= ssh_key %>"
+                "--ssh-port" = "<%= ssh_port %>"
+                "--config" = "<%= config_file %>"
+	}
 }
 
-define command {
-        command_name  cs-nagios_check-diskusage
-        command_line  <%= bin_path -%>cs-nagios check router disk_usage -H $HOSTADDRESS$ -w $ARG1$ -c $ARG2$ -P $ARG3$ --ssh-key <%= ssh_key %> --ssh-port <%= ssh_port %> --config <%= config_file %>
-        register      1
+object CheckCommand "cs-nagios_check-diskusage" {
+	import "plugin-check-command"
+        command = [ "<%= bin_path -%>cs-nagios check router disk_usage" ]
+
+	arguments = {
+                "-H" = "$address$"
+                "-w" = "80"
+                "-c" = "90"
+ 		"-P" = "/var"
+                "--ssh_key" = "<%= ssh_key %>"
+                "--ssh-port" = "<%= ssh_port %>"
+                "--config" = "<%= config_file %>"
+	}
 }
 
-define command {
-        command_name  cs-nagios_check-conntrack_connections
-        command_line  <%= bin_path -%>cs-nagios check router conntrack_connections -H $HOSTADDRESS$ -w $ARG1$ -c $ARG2$ --ssh-key <%= ssh_key %> --ssh-port <%= ssh_port %> --config <%= config_file %>
-        register      1
+object CheckCommand "cs-nagios_check-conntrack_connections" {
+	import "plugin-check-command"
+        command = [ "<%= bin_path -%>cs-nagios check router conntrack_connections" ]
+
+	arguments = {
+                "-H" = "$address$"
+                "-w" = "80"
+                "-c" = "90"
+                "--ssh_key" = "<%= ssh_key %>"
+                "--ssh-port" = "<%= ssh_port %>"
+                "--config" = "<%= config_file %>"
+	}
 }
 
-define command {
-        command_name  cs-nagios_check-active_ftp
-        command_line  <%= bin_path -%>cs-nagios check router active_ftp -H $HOSTADDRESS$ --ssh-key <%= ssh_key %> --ssh-port <%= ssh_port %> --config <%= config_file %>
-        register      1
+object CheckCommand "cs-nagios_check-active_ftp" {
+	import "plugin-check-command"
+        command = [ "<%= bin_path -%>cs-nagios check router active_ftp" ]
+
+ 	arguments = {
+                "-H" = "$address$"
+                "-w" = "80"
+                "-c" = "90"
+                "-P" = "/"
+                "--ssh_key" = "<%= ssh_key %>"
+                "--ssh-port" = "<%= ssh_port %>"
+                "--config" = "<%= config_file %>"
+        }
 }
 
-define service {
-        hostgroup_name	     CloudstackRouter
-        service_description  Cloudstack Virtual Router Memory
-        display_name         Cloudstack Virtual Router Memory
-        use                  Generic-Service,service-pnp
-        check_command        cs-nagios_check-memory!80!90
-        register             1
+apply Service "Cloudstack Virtual Router Memory" {
+        import	"generic-service-pnp"
+        check_command  = "cs-nagios_check-memory"
+	assign where "CloudstackRouter" in host.groups
 }
 
-define service {
-	hostgroup_name       CloudstackRouter
-        service_description  Cloudstack Virtual Router CPU
-        display_name         Cloudstack Virtual Router CPU
-        use                  Generic-Service,service-pnp
-        check_command        cs-nagios_check-cpu!80!90
-        register             1
+apply Service "Cloudstack Virtual Router CPU" {
+        import  "generic-service-pnp"
+        check_command  = "cs-nagios_check-cpu"
+	assign where "CloudstackRouter" in host.groups
 }
 
-define service {
-	hostgroup_name       CloudstackRouter
-        service_description  Cloudstack Virtual Router Network
-        display_name         Cloudstack Virtual Router Network
-        use                  Generic-Service,service-pnp
-        check_command        cs-nagios_check-network!80!90
-        register             1
+apply Service "Cloudstack Virtual Router Network" {
+	import  "generic-service-pnp"
+        check_command =  "cs-nagios_check-network"
+	assign where "CloudstackRouter" in host.groups
 }
 
-define service {
-	hostgroup_name       CloudstackRouter
-        service_description  Cloudstack Virtual Router RootFS r/w
-        display_name         Cloudstack Virtual Router RootFS r/w
-        use                  Generic-Service,service-pnp
-        check_command        cs-nagios_check-rootfsrw!80!90
-        register             1
+apply Service "Cloudstack Virtual Router RootFS r/w" {
+	import  "generic-service-pnp"
+        check_command  = "cs-nagios_check-rootfsrw"
+	assign where "CloudstackRouter" in host.groups
 }
 
-define service {
-	hostgroup_name       CloudstackRouter
-        service_description  Cloudstack Virtual Router DiskUsageRoot
-        display_name         Cloudstack Virtual Router DiskUsage Root
-        use                  Generic-Service,service-pnp
-        check_command        cs-nagios_check-diskusage!80!90!/
-        register             1
+apply Service "Cloudstack Virtual Router DiskUsageRoot" {
+	import  "generic-service-pnp"
+        check_command  = "cs-nagios_check-diskusage"
+	assign where "CloudstackRouter" in host.groups
 }
 
-define service {
-	hostgroup_name       CloudstackRouter
-        service_description  Cloudstack Virtual Router DiskUsageVar
-        display_name         Cloudstack Virtual Router DiskUsage Var
-        use                  Generic-Service,service-pnp
-        check_command        cs-nagios_check-diskusage!80!90!/var
-        register             1
+apply Service "Cloudstack Virtual Router DiskUsageVar" {
+	import  "generic-service-pnp"
+        check_command = "cs-nagios_check-diskusage"
+	assign where "CloudstackRouter" in host.groups
 }
 
-define service {
-        hostgroup_name       CloudstackRouter
-        service_description  Cloudstack Virtual Router ConntrackConnections
-        display_name         Cloudstack Virtual Router Conntrack Connections
-        use                  Generic-Service,service-pnp
-        check_command        cs-nagios_check-conntrack_connections!80!90
-        register             1
+apply Service "Cloudstack Virtual Router ConntrackConnections" {
+	import  "generic-service-pnp"
+        check_command = "cs-nagios_check-conntrack_connections"
+	assign where "CloudstackRouter" in host.groups
 }
 
-define service {
-        hostgroup_name       CloudstackRouter
-        service_description  Cloudstack Virtual Router ActiveFTP
-        display_name         Cloudstack Virtual Router ActiveFTP
-        use                  Generic-Service,service-pnp
-        check_command        cs-nagios_check-active_ftp
-        register             1
+apply Service "Cloudstack Virtual Router ActiveFTP" {
+	import  "generic-service-pnp"
+        check_command = "cs-nagios_check-active_ftp"
+	assign where "CloudstackRouter" in host.groups
 }

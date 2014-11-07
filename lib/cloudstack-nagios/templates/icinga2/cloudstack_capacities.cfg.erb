@@ -1,21 +1,24 @@
 
 <% capacity_types.each do |cap_type, cap_values| -%>
-define command {
-        command_name  cs-nagios_check-capacity_<%= cap_values[:method_name] %>
-        command_line  <%= bin_path -%>cs-nagios check capacity <%= cap_values[:method_name] %> -w $ARG1$ -c $ARG2$ --config <%= config_file %> --zone $ARG3$
-        register      1
+object CheckCommand "cs-nagios_check-capacity_<%= cap_values[:method_name] %>" {
+	import "plugin-check-command"
+        command = [ "<%= bin_path -%>cs-nagios check capacity <%= cap_values[:method_name] %>" ] 
+
+	arguments = {
+                "-w" = "80"
+                "-c" = "90"
+                "--config" = "<%= config_file %>"
+                "--zone" = "$ARG3$"
+        }
 }
 
 <% end -%>
 <% zones.each do |zone| -%>
   <% capacity_types.each do |cap_type, cap_values| -%>
-define service {
-        host_name            Cloudstack_<%= zone['name'] %>
-        service_description  Cloudstack <%= zone['name'] %> <%= cap_values[:name] %>
-        display_name         Cloudstack <%= zone['name'] %> <%= cap_values[:method_name] %>
-        use                  Generic-Service,service-pnp
-        check_command        cs-nagios_check-capacity_<%= cap_values[:method_name] -%>!80!90!<%= zone['name'] %>
-        register             1
+apply Service "Cloudstack <%= zone['name'] %> <%= cap_values[:name] %>"  {
+	import "generic-service-pnp"
+        check_command  = "cs-nagios_check-capacity_<%= cap_values[:method_name] -%>"
+	assign where host.name in [ "Cloudstack_<%= zone['name'] %>" ]
 }
 
   <% end -%>

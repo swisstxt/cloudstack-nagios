@@ -1,99 +1,123 @@
 
-define command {
-        command_name  cs-nagios_check_systemvm-memory
-        command_line  <%= bin_path -%>cs-nagios check system_vm memory -H $HOSTADDRESS$ -w $ARG1$ -c $ARG2$ --ssh-key <%= ssh_key %> --ssh-port <%= ssh_port %> --config <%= config_file %>
-        register      1
+object CheckCommand "cs-nagios_check_systemvm-memory" {
+	import "plugin-check-command"
+        command = [ "<%= bin_path -%>cs-nagios check system_vm memory" ]
+        arguments = {
+                "-H" = "$address$"
+                "-w" = "80"
+                "-c" = "90"
+		"--ssh-key" = "<%= ssh_key %>"
+		"--ssh-port" =  "<%= ssh_port %>"
+ 		"--config" = "<%= config_file %>"
+        }
 }
 
-define command {
-        command_name  cs-nagios_check_systemvm-cpu
-        command_line  <%= bin_path -%>cs-nagios check system_vm cpu -H $HOSTADDRESS$ -w $ARG1$ -c $ARG2$ --ssh-key <%= ssh_key %> --ssh-port <%= ssh_port %> --config <%= config_file %>
-        register      1
+object CheckCommand "cs-nagios_check_systemvm-cpu" {
+	import "plugin-check-command"
+        command = [ "<%= bin_path -%>cs-nagios check system_vm cpu" ]
+	arguments = {
+                "-H" = "$address$"
+                "-w" = "80"
+                "-c" = "90"
+                "--ssh-key" = "<%= ssh_key %>"
+                "--ssh-port" =  "<%= ssh_port %>"
+                "--config" = "<%= config_file %>"
+        }
 }
 
-define command {
-        command_name  cs-nagios_check_systemvm-network
-        command_line  <%= bin_path -%>cs-nagios check system_vm network -H $HOSTADDRESS$ -w $ARG1$ -c $ARG2$ --if-speed <%= if_speed %> --ssh-key <%= ssh_key %> --ssh-port <%= ssh_port %> --config <%= config_file %>
-        register      1
+object CheckCommand "cs-nagios_check_systemvm-network" {
+	import "plugin-check-command"
+        command = [ "<%= bin_path -%>cs-nagios check system_vm network" ]
+	arguments = {
+                "-H" = "$address$"
+                "-w" = "80"
+                "-c" = "90"
+		"--if-speed" = "<%= if_speed %>"
+                "--ssh-key" = "<%= ssh_key %>"
+                "--ssh-port" =  "<%= ssh_port %>"
+                "--config" = "<%= config_file %>"
+        }
 }
 
-define command {
-        command_name  cs-nagios_check_systemvm-fsrw
-        command_line  <%= bin_path -%>cs-nagios check system_vm fs_rw -H $HOSTADDRESS$ -w $ARG1$ -c $ARG2$ --ssh-key <%= ssh_key %> --ssh-port <%= ssh_port %> --config <%= config_file %>
-        register      1
+object CheckCommand "cs-nagios_check_systemvm-fsrw" {
+	import "plugin-check-command"
+        command = [ "<%= bin_path -%>cs-nagios check system_vm fs_rw" ]
+	arguments = {
+                "-H" = "$address$"
+                "-w" = "80"
+                "-c" = "90"
+                "--ssh-key" = "<%= ssh_key %>"
+                "--ssh-port" =  "<%= ssh_port %>"
+                "--config" = "<%= config_file %>"
+        }
 }
 
-define command {
-        command_name  cs-nagios_check_systemvm-diskusage
-        command_line  <%= bin_path -%>cs-nagios check system_vm disk_usage -H $HOSTADDRESS$ -w $ARG1$ -c $ARG2$ -P $ARG3$ --ssh-key <%= ssh_key %> --ssh-port <%= ssh_port %> --config <%= config_file %>
-        register      1
+object CheckCommand "cs-nagios_check_systemvm-diskusage" {
+	import "plugin-check-command"
+        command = [ "<%= bin_path -%>cs-nagios check system_vm disk_usage" ]
+	arguments = {
+                "-H" = "$address$"
+                "-w" = "80"
+                "-c" = "90"
+		"-P" = "/var/"
+                "--ssh-key" = "<%= ssh_key %>"
+                "--ssh-port" =  "<%= ssh_port %>"
+                "--config" = "<%= config_file %>"
+        }
 }
 
-define command {
-        command_name  cs-nagios_check_systemvm-secstorrw
-        command_line  <%= bin_path -%>cs-nagios check system_vm secstor_rw -H $HOSTADDRESS$ -w $ARG1$ -c $ARG2$ --ssh-key <%= ssh_key %> --ssh-port <%= ssh_port %> --config <%= config_file %>
-        register      1
+object CheckCommand "cs-nagios_check_systemvm-secstorrw" {
+	import "plugin-check-command"
+        command = [ "<%= bin_path -%>cs-nagios check system_vm secstor_rw" ]
+	arguments = {
+                "-H" = "$address$"
+                "-w" = "80"
+                "-c" = "90"
+                "-P" = "/var/"
+                "--ssh-key" = "<%= ssh_key %>"
+                "--ssh-port" =  "<%= ssh_port %>"
+                "--config" = "<%= config_file %>"
+        }
 }
 
-define service {
-        hostgroup_name	     CloudstackSystemVm
-        service_description  Cloudstack System VM Memory
-        display_name         Cloudstack System VM Memory
-        use                  Generic-Service,service-pnp
-        check_command        cs-nagios_check_systemvm-memory!80!90
-        register             1
+apply Service "Cloudstack System VM Memory" {
+        import "generic-service-pnp"
+        check_command =  "cs-nagios_check_systemvm-memory"
+	assign where "CloudstackSystemVm" in host.groups
 }
 
-define service {
-        hostgroup_name       CloudstackSystemVm
-        service_description  Cloudstack System VM CPU
-        display_name         Cloudstack System VM CPU
-        use                  Generic-Service,service-pnp
-        check_command        cs-nagios_check_systemvm-cpu!80!90
-        register             1
+apply Service "Cloudstack System VM CPU" {
+	import "generic-service-pnp"
+        check_command = "cs-nagios_check_systemvm-cpu"
+	assign where "CloudstackSystemVm" in host.groups
 }
 
-define service {
-        hostgroup_name       CloudstackSystemVm
-        service_description  Cloudstack System VM Network
-        display_name         Cloudstack System VM Network
-        use                  Generic-Service,service-pnp
-        check_command        cs-nagios_check_systemvm-network!80!90
-        register             1
+apply Service "Cloudstack System VM Network" {
+	import "generic-service-pnp"
+        check_command = "cs-nagios_check_systemvm-network"
+	assign where "CloudstackSystemVm" in host.groups
 }
 
-define service {
-        hostgroup_name       CloudstackSystemVm
-        service_description  Cloudstack System VM FS r/w
-        display_name         Cloudstack System VM FS r/w
-        use                  Generic-Service,service-pnp
-        check_command        cs-nagios_check_systemvm-fsrw!80!90
-        register             1
+apply Service "Cloudstack System VM FS r/w" {
+	import "generic-service-pnp"
+        check_command = "cs-nagios_check_systemvm-fsrw"
+	assign where "CloudstackSystemVm" in host.groups
 }
 
-define service {
-        hostgroup_name       CloudstackSystemVm
-        service_description  Cloudstack System VM DiskUsageRoot
-        display_name         Cloudstack System VM DiskUsageRoot
-        use                  Generic-Service,service-pnp
-        check_command        cs-nagios_check_systemvm-diskusage!80!90!/
-        register             1
+apply Service "Cloudstack System VM DiskUsageRoot" {
+	import "generic-service-pnp"
+        check_command = "cs-nagios_check_systemvm-diskusage"
+	assign where "CloudstackSystemVm" in host.groups
 }
 
-define service {
-        hostgroup_name       CloudstackSystemVm
-        service_description  Cloudstack System VM DiskUsageVar
-        display_name         Cloudstack System VM DiskUsageVar
-        use                  Generic-Service,service-pnp
-        check_command        cs-nagios_check_systemvm-diskusage!80!90!/var
-        register             1
+apply Service "Cloudstack System VM DiskUsageVar" {
+	import "generic-service-pnp"
+        check_command  = "cs-nagios_check_systemvm-diskusage"
+	assign where "CloudstackSystemVm" in host.groups
 }
 
-define service {
-        hostgroup_name       CloudstackSSVM
-        service_description  Cloudstack SSVM SecondaryStorageRW
-        display_name         Cloudstack SSVM SecondaryStorageRW
-        use                  Generic-Service,service-pnp
-        check_command        cs-nagios_check_systemvm-secstorrw!80!90!
-        register             1
+apply Service "Cloudstack SSVM SecondaryStorageRW" {
+	import "generic-service-pnp"
+        check_command = "cs-nagios_check_systemvm-secstorrw"
+	assign where "CloudstackSystemVm" in host.groups
 }

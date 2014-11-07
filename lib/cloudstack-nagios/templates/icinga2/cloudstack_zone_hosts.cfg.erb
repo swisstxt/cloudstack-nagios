@@ -1,13 +1,10 @@
 
 <% zones.each do |zone| -%>
-define host {
-  host_name      Cloudstack_<%= zone['name'] %>
-  display_name   Cloudstack_<%= zone['name'] %>
-  address        localhost
-  use            Linux-Host,host-pnp
-  hostgroups     Cloudstack
-  check_command  check-host-alive
-  register       1
+object Host "Cloudstack_<%= zone['name'] %>" {
+  import "generic-host"
+  address = "localhost"
+  vars.os = "Linux"
+  groups  = [ "Cloudstack" ] 
 }
 
 <% end -%>
