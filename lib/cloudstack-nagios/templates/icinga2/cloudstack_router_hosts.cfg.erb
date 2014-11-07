@@ -4,9 +4,7 @@
 object Host  "<%= router['name'] %> (<%= router['linklocalip'] %>)<%= " - #{router['project']}" if router['project'] %> - <%= router['zonename'] %>"  {
   import "generic-host"
   address = "<%= router['linklocalip'] %>"
-  vars.os = "Linux"
-  vars.os_family = "Debian"
-  groups = [ "CloudstackRouter" ]
+  groups = [ "CloudstackRouter" <%= ', "datacenter-ix"' if router['zonename'] == 'ZUERICH_IX' %>  <%= ', "datacenter-bie"' if router['zonename'] == 'BIEL_CU01' %> ]
 }
 
   <% end -%>
