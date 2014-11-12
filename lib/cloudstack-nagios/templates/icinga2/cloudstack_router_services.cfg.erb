@@ -93,7 +93,6 @@ object CheckCommand "cs-nagios_check-active_ftp" {
                 "-H" = "$address$"
                 "-w" = "80"
                 "-c" = "90"
-                "-P" = "/"
                 "--ssh_key" = "<%= ssh_key %>"
                 "--ssh-port" = "<%= ssh_port %>"
                 "--config" = "<%= config_file %>"
