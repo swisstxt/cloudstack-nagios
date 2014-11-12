@@ -1,7 +1,7 @@
 
 object CheckCommand "cs-nagios_check-memory" {
 	import "plugin-check-command"
-        command = [  "<%= bin_path -%>cs-nagios check router memory" ]
+        command = [  "<%= bin_path -%>cs-nagios", "check", "router" ,"memory" ]
 
         arguments = {
         	"-H" = "$address$"
@@ -15,7 +15,7 @@ object CheckCommand "cs-nagios_check-memory" {
 
 object CheckCommand "cs-nagios_check-cpu" {
 	import "plugin-check-command"
-        command = [ "<%= bin_path -%>cs-nagios check router cpu" ] 
+        command = [ "<%= bin_path -%>cs-nagios", "check", "router", "cpu" ] 
 
         arguments = {
                 "-H" = "$address$"
@@ -29,7 +29,7 @@ object CheckCommand "cs-nagios_check-cpu" {
 
 object CheckCommand "cs-nagios_check-network" {
 	import "plugin-check-command"
-        command = [  "<%= bin_path -%>cs-nagios check router network"  ]
+        command = [  "<%= bin_path -%>cs-nagios", "check", "router", "network"  ]
 
         arguments = {
                 "-H" = "$address$"
@@ -44,7 +44,7 @@ object CheckCommand "cs-nagios_check-network" {
 
 object CheckCommand "cs-nagios_check-rootfsrw" {
 	import "plugin-check-command"
-        command = [  "<%= bin_path -%>cs-nagios check router rootfs_rw" ]
+        command = [  "<%= bin_path -%>cs-nagios", "check", "router", "rootfs_rw" ]
 
         arguments = {
                 "-H" = "$address$"
@@ -58,7 +58,7 @@ object CheckCommand "cs-nagios_check-rootfsrw" {
 
 object CheckCommand "cs-nagios_check-diskusage" {
 	import "plugin-check-command"
-        command = [ "<%= bin_path -%>cs-nagios check router disk_usage" ]
+        command = [ "<%= bin_path -%>cs-nagios", "check", "router", "disk_usage" ]
 
 	arguments = {
                 "-H" = "$address$"
@@ -73,7 +73,7 @@ object CheckCommand "cs-nagios_check-diskusage" {
 
 object CheckCommand "cs-nagios_check-conntrack_connections" {
 	import "plugin-check-command"
-        command = [ "<%= bin_path -%>cs-nagios check router conntrack_connections" ]
+        command = [ "<%= bin_path -%>cs-nagios", "check", "router", "conntrack_connections" ]
 
 	arguments = {
                 "-H" = "$address$"
@@ -87,7 +87,7 @@ object CheckCommand "cs-nagios_check-conntrack_connections" {
 
 object CheckCommand "cs-nagios_check-active_ftp" {
 	import "plugin-check-command"
-        command = [ "<%= bin_path -%>cs-nagios check router active_ftp" ]
+        command = [ "<%= bin_path -%>cs-nagios", "check", "router", "active_ftp" ]
 
  	arguments = {
                 "-H" = "$address$"

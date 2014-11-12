@@ -2,7 +2,7 @@
 <% capacity_types.each do |cap_type, cap_values| -%>
 object CheckCommand "cs-nagios_check-capacity_<%= cap_values[:method_name] %>" {
 	import "plugin-check-command"
-        command = [ "<%= bin_path -%>cs-nagios check capacity <%= cap_values[:method_name] %>" ] 
+        command = [ "<%= bin_path -%>cs-nagios", "check", "capacity", "<%= cap_values[:method_name] %>" ] 
 
 	arguments = {
                 "-w" = "80"
