@@ -6,7 +6,7 @@ require 'cloudstack-nagios/version'
 Gem::Specification.new do |gem|
   gem.name          = "cloudstack-nagios"
   gem.version       = CloudstackNagios::VERSION
-  gem.authors       = ["Nik Wolfgramm"]
+  gem.authors       = ["Nik Wolfgramm", "Martin Kolly"]
   gem.email         = ["nik.wolfgramm@gmail.com"]
   gem.description   = %q{cloudstack-nagios generates nagios configuration and checks for monitoring CloudStack with nagios.}
   gem.summary       = %q{cloudstack-nagios CloudStack monitoring tools for nagios}
