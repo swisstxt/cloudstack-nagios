@@ -3,7 +3,6 @@
 object Host "Cloudstack_<%= zone['name'] %>" {
   import "generic-host"
   address = "localhost"
-  vars.os = "Linux"
   groups  = [ "Cloudstack" ] 
 }
 
