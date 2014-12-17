@@ -5,6 +5,8 @@ object Host "<%= vm['name'] %>" {
   import "generic-host"
   address = "<%= vm['privateip'] %>"
   groups = [ "CloudstackSystemVm<%= '" , "CloudstackSSVM' if vm['systemvmtype'] == 'secondarystoragevm' %>" ]
+
+  vars.zone = "<%= zone['name'] %>"
 }
 
   <% end -%>

@@ -8,7 +8,7 @@ object CheckCommand "cs-nagios_check-capacity_<%= cap_values[:method_name] %>" {
                 "-w" = "80"
                 "-c" = "90"
                 "--config" = "<%= config_file %>"
-                "--zone" = "$ARG3$"
+                "--zone" = "$host.vars.zone$"
         }
 }
 
