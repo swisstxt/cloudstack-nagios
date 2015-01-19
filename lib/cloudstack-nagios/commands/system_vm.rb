@@ -24,15 +24,29 @@ class SystemVm < CloudstackNagios::Base
   end
 
   desc "cpu", "check memory on host"
+  option :mode,
+    desc: "average mode gives the average value over all CPU's and max the highest usage of any CPU",
+    :enum => %w(average max),
+    aliases: '-m',
+    default: 'average'
   def cpu
     begin
       host = systemvm_host
       mpstat_output = ""
       on host do |h|
-        mpstat_output = capture(:mpstat)
+        mpstat_output = capture(:mpstat, '-P ALL', '2', '2')
       end
-      values = mpstat_output.scan(/\d+\.\d+/)
-      usage = 100 - values[-1].to_f
+      # max takes the min idle value, removes zero values before
+      value = if options[:mode] == "max"
+        values = mpstat_output.each_line.to_a.slice(3..-1).map do |line, index|
+          line.scan(/\d+\.\d+/)[-1].to_f
+        end
+        values.delete(0.0)
+        values.min
+      else
+        mpstat_output.scan(/\d+\.\d+/)[-1].to_f
+      end
+      usage = 100 - value
       data = check_data(100, usage, options[:warning], options[:critical])
       puts "CPU #{RETURN_CODES[data[0]]} - usage = #{data[1]}% | usage=#{data[1]}%"
       exit data[0]

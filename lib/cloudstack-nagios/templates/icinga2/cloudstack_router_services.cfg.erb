@@ -15,7 +15,7 @@ object CheckCommand "cs-nagios_check-memory" {
 
 object CheckCommand "cs-nagios_check-cpu" {
 	import "plugin-check-command"
-        command = [ "<%= bin_path -%>cs-nagios", "check", "router", "cpu" ] 
+        command = [ "<%= bin_path -%>cs-nagios", "check", "router", "cpu" ]
 
         arguments = {
                 "-H" = "$address$"
@@ -24,6 +24,21 @@ object CheckCommand "cs-nagios_check-cpu" {
                 "--ssh_key" = "<%= ssh_key %>"
                 "--ssh-port" = "<%= ssh_port %>"
                 "--config" = "<%= config_file %>"
+	}
+}
+
+object CheckCommand "cs-nagios_check-cpu-max" {
+	import "plugin-check-command"
+	command = [ "<%= bin_path -%>cs-nagios", "check", "router", "cpu" ]
+
+	arguments = {
+		"-H" = "$address$"
+		"-m" = "max"
+		"-w" = "80"
+		"-c" = "90"
+		"--ssh_key" = "<%= ssh_key %>"
+		"--ssh-port" = "<%= ssh_port %>"
+		"--config" = "<%= config_file %>"
 	}
 }
 
@@ -108,6 +123,12 @@ apply Service "Cloudstack Virtual Router Memory" {
 apply Service "Cloudstack Virtual Router CPU" {
         import  "generic-service-pnp"
         check_command  = "cs-nagios_check-cpu"
+	assign where "CloudstackRouter" in host.groups
+}
+
+apply Service "Cloudstack Virtual Router Max CPU" {
+	import  "generic-service-pnp"
+	check_command  = "cs-nagios_check-cpu-max"
 	assign where "CloudstackRouter" in host.groups
 }
 
