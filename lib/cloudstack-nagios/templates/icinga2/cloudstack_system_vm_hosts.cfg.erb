@@ -3,10 +3,10 @@
   <% if vm['privateip'] -%>
 object Host "<%= vm['name'] %>" {
   import "generic-host"
-  vars.os = "Linux"
-  vars.os_family = "RedHat"
   address = "<%= vm['privateip'] %>"
   groups = [ "CloudstackSystemVm<%= '" , "CloudstackSSVM' if vm['systemvmtype'] == 'secondarystoragevm' %>" ]
+
+  vars.zone = "<%= zone['name'] %>"
 }
 
   <% end -%>

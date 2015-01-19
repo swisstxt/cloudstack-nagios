@@ -12,5 +12,5 @@ object CheckCommand "cs-nagios_check-asyncjobs" {
 apply Service "Cloudstack Async Jobs" {
 	import "generic-service-pnp"
         check_command = "cs-nagios_check-asyncjobs"
-	assign where "CloudstackSystemVm" in host.groups
+	assign where "Cloudstack" in host.groups
 }

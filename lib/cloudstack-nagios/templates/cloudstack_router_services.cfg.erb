@@ -100,8 +100,8 @@ define service {
 
 define service {
         hostgroup_name       CloudstackRouter
-        service_description  Cloudstack Virtual Router RootFS r/w
-        display_name         Cloudstack Virtual Router RootFS r/w
+        service_description  Cloudstack Virtual Router VarFS r/w
+        display_name         Cloudstack Virtual Router VarFS r/w
         use                  Generic-Service,service-pnp
         check_command        cs-nagios_check-varfsrw!80!90
         register             1
