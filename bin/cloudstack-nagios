@@ -1,0 +1,5 @@
+#!/usr/bin/env ruby
+
+require 'cloudstack_nagios'
+
+CloudstackNagios::Cli.start(ARGV)
