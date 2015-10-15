@@ -76,7 +76,7 @@ class Check < CloudstackNagios::Base
       default: 10,
       aliases: '-c'
    def async_jobs
-      jobs = client.send_request('command' => 'listAsyncJobs', 'listall' => 'true')['asyncjobs']
+      jobs = client.list_async_jobs(listall: true)
       outstanding_jobs = jobs.select {|job| job['jobstatus'] == 0 }
       if outstanding_jobs.size < options[:warning]
         code = 0

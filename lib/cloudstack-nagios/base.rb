@@ -54,19 +54,6 @@ module CloudstackNagios
         config
       end
 
-      def find_project(project_name = options[:project])
-        return nil unless project_name
-        unless project = client.get_project(project_name)
-          say "Project '#{options[:project]}' not found", :red
-          exit 1
-        end
-        project
-      end
-
-      def filter_by(objects, tag_name, tag)
-        objects.select {|r| r[tag_name].downcase == tag.downcase}
-      end
-
       def sshoptions(ssh_key)
        {
          timeout: 5,

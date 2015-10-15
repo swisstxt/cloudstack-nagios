@@ -38,11 +38,12 @@ module CloudstackNagios
     end
 
     def check_data(total, usage, warning, critical)
-      usage_percent = (100.0 / total.to_f * usage.to_f) || 0.0
+      usage_percent = 100.0 / total.to_f * usage.to_f
+
       if usage_percent.nan?
         usage_percent = 0.0
       end
-      code = 3
+
       if usage_percent < warning
         code = 0
       elsif usage_percent < critical
