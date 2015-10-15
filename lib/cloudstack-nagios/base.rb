@@ -23,12 +23,13 @@ module CloudstackNagios
     no_commands do
       def client(opts = {})
         @config ||= load_configuration
-        @client ||= CloudstackClient::Connection.new(
+        @client ||= CloudstackClient::Client.new(
           @config[:url],
           @config[:api_key],
           @config[:secret_key],
-          opts.merge({debug: options[:debug]})
         )
+        @client.debug = true if options[:debug]
+        @client
       end
 
       def load_configuration(config_file = options[:config], env = options[:environment])

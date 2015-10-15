@@ -13,7 +13,7 @@ Gem::Specification.new do |gem|
   gem.homepage      = "https://github.com/swisstxt/cloudstack-nagios"
   gem.license       = 'MIT'
 
-  gem.required_ruby_version = '>= 1.9.3'
+  gem.required_ruby_version = '>= 2.0'
   gem.files         = `git ls-files`.split($/)
   gem.executables   = ['cs-nagios']
   gem.test_files    = gem.files.grep(%r{^(test|spec|features)/})
@@ -23,7 +23,7 @@ Gem::Specification.new do |gem|
   gem.add_development_dependency('rdoc')
   gem.add_development_dependency('rake', '~> 10.3.1')
 
-  gem.add_dependency('cloudstack_client', '~> 0.7', '>= 0.7.1')
+  gem.add_dependency('cloudstack_client', '~> 1.0.4')
   gem.add_dependency('thor', '~> 0.19.1')
   gem.add_dependency('erubis', '~> 2.7.0')
   gem.add_dependency('sshkit', '~> 1.3.0')

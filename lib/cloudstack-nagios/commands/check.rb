@@ -101,10 +101,11 @@ class Check < CloudstackNagios::Base
       default: 24,
       aliases: '-c'
    def snapshots
-     snapshots = []
-     snapshots << client.send_request('command' => 'listSnapshots', 'projectid' => '-1')['snapshot']
-     snapshots << client.send_request('command' => 'listSnapshots')['snapshot']
-     snapshots.compact!.flatten!
+     snapshots = client.list_snapshots(listall: true)
+     client.list_projects(listall: true).each do |p|
+       snapshots = snapshots.concat(client.list_snapshots(listall: true, project_id: p['id']))
+     end
+
      not_backed_up = snapshots.select{|s| s['state'] != 'BackedUp' }
 
      warnings = []
