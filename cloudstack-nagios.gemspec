@@ -15,7 +15,7 @@ Gem::Specification.new do |gem|
 
   gem.required_ruby_version = '>= 2.0'
   gem.files         = `git ls-files`.split($/)
-  gem.executables   = ['cs-nagios']
+  gem.executables   = ['cs-nagios', 'cloudstack-nagios']
   gem.test_files    = gem.files.grep(%r{^(test|spec|features)/})
   gem.require_paths = ["lib"]
   gem.rdoc_options  = %w[--line-numbers --inline-source]
