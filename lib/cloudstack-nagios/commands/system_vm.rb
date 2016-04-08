@@ -1,6 +1,7 @@
-require 'sshkit/dsl'
+require 'sshkit'
 
 class SystemVm < CloudstackNagios::Base
+  include SSHKit::DSL
 
   desc "memory HOST", "check memory on host"
   def memory

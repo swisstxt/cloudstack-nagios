@@ -1,8 +1,9 @@
-require 'sshkit/dsl'
+require 'sshkit'
 require 'socket'
 require 'timeout'
 
 class SnmpdConfig < CloudstackNagios::Base
+  include SSHKit::DSL
 
   desc "check [vms]", "check if snmpd is configured on virtual routers"
   def check(*vms)
