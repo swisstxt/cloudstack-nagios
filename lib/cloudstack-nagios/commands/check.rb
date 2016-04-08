@@ -93,12 +93,12 @@ class Check < CloudstackNagios::Base
    option :warning,
       desc: 'warning level',
       type: :numeric,
-      default: 12,
+      default: 1,
       aliases: '-w'
    option :critical,
       desc: 'critical level',
       type: :numeric,
-      default: 24,
+      default: 2,
       aliases: '-c'
    def snapshots
      snapshots = client.list_snapshots(listall: true)
@@ -107,7 +107,6 @@ class Check < CloudstackNagios::Base
      end
 
      not_backed_up = snapshots.select{|s| s['state'] != 'BackedUp' }
-
      warnings = []
      critical = []
 
@@ -117,9 +116,9 @@ class Check < CloudstackNagios::Base
        critical << s if age > options[:critical]
      end
 
-     code = if critical.size > 0
+     code = if critical.size > options[:critical]
        2
-     elsif warnings.size > 0
+     elsif warnings.size > options[:warning]
        1
      else
        0
