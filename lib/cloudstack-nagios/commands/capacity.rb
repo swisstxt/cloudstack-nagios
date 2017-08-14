@@ -16,14 +16,15 @@ class Capacity < CloudstackNagios::Base
   CAPACITY_TYPES.each do |type, value|
     desc value[:method_name], "check #{value[:name].downcase} on host"
     option :zone, required: true
-    define_method(value[:method_name]) { 
+    define_method(value[:method_name]) {
       capacity_check(options[:zone], type)
     }
   end
 
   no_commands do
     def capacity_check(zone, type)
-      cap = client.list_capacity(type: type, zone: zone).first
+      res_zone = client.list_zones(name: zone).first
+      cap = client.list_capacity(type: type, zoneid: res_zone['id']).first
       data = check_data(cap['capacitytotal'].to_f, cap['capacityused'].to_f, options[:warning], options[:critical])
       puts "#{CAPACITY_TYPES[type][:name]} #{RETURN_CODES[data[0]]} - usage = #{data[1]}% | usage=#{cap['capacityused']} usage_perc=#{data[1]}%"
       exit data[0]
