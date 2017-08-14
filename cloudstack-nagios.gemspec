@@ -21,11 +21,11 @@ Gem::Specification.new do |gem|
   gem.rdoc_options  = %w[--line-numbers --inline-source]
 
   gem.add_development_dependency('rdoc')
-  gem.add_development_dependency('rake', '~> 11.1')
+  gem.add_development_dependency('rake', '~> 12.0')
 
-  gem.add_dependency('cloudstack_client', '~> 1.3')
-  gem.add_dependency('thor', '~> 0.19')
+  gem.add_dependency('cloudstack_client', '~> 1.5')
+  gem.add_dependency('thor', '~> 0.19.4')
   gem.add_dependency('erubis', '~> 2.7')
-  gem.add_dependency('sshkit', '~> 1.9')
+  gem.add_dependency('sshkit', '~> 1.14.0')
   gem.add_dependency('highline', '~> 1.7')
 end

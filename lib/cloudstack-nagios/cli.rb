@@ -5,7 +5,15 @@ module CloudstackNagios
     include Thor::Actions
 
     package_name "cloudstack-nagios"
-    map %w(-v --version) => :version
+
+    # rescue error globally
+    def self.start(given_args=ARGV, config={})
+      super
+    rescue => e
+      error_class = e.class.name.split('::')
+      puts "\e[31mERROR\e[0m: #{error_class.last} - #{e.message}"
+      puts e.backtrace if ARGV.include? "--debug"
+    end
 
     class_option :config,
       default: ENV['HOME'] ?
@@ -21,6 +29,7 @@ module CloudstackNagios
       desc: 'enable debug output',
       type: :boolean
 
+    map %w(-v --version) => :version
     desc "version", "outputs the cloudstack-nagios version"
     def version
       say "cloudstack-nagios v#{CloudstackNagios::VERSION}"

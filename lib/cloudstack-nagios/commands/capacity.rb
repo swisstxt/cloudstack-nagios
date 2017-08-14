@@ -23,7 +23,9 @@ class Capacity < CloudstackNagios::Base
 
   no_commands do
     def capacity_check(zone, type)
-      res_zone = client.list_zones(name: zone).first
+      unless res_zone = client.list_zones(name: zone).first
+        raise CloudstackNagios::InputError, "zone '#{zone}' not found."
+      end
       cap = client.list_capacity(type: type, zoneid: res_zone['id']).first
       data = check_data(cap['capacitytotal'].to_f, cap['capacityused'].to_f, options[:warning], options[:critical])
       puts "#{CAPACITY_TYPES[type][:name]} #{RETURN_CODES[data[0]]} - usage = #{data[1]}% | usage=#{cap['capacityused']} usage_perc=#{data[1]}%"
