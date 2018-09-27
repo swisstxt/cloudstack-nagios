@@ -9,12 +9,12 @@ class SystemVm < CloudstackNagios::Base
       host = systemvm_host
       free_output = ""
       on host do |h|
-        free_output = capture(:free)
+        free_output = capture(:cat, '/proc/meminfo')
       end
       values = free_output.scan(/\d+/)
       total = values[0].to_i
-      free = values[2].to_i
-      free_b = values[7].to_i
+      free = values[1].to_i
+      free_b = values[1].to_i + values[3].to_i + values[4].to_i
       data = check_data(total, total - free_b, options[:warning], options[:critical])
       puts "MEMORY #{RETURN_CODES[data[0]]} - usage = #{data[1]}% (#{((total - free_b)/1024.0).round(0)}/#{(total/1024.0).round(0)}MB) | \
             usage=#{data[1]}% total=#{total}M free=#{free}M free_wo_buffers=#{free_b}M".gsub(/\s+/, " ")
