@@ -180,6 +180,30 @@ class SystemVm < CloudstackNagios::Base
     end
   end
 
+  desc "uptime", "return uptime"
+  def uptime
+    begin
+	  host = systemvm_host
+	  uptime_sec = 0
+      on host do |h|
+        uptime_sec = capture('cat /proc/uptime').split[0].to_f
+	  end
+
+	  if uptime_sec < options[:critical]
+	    code = 2
+      elsif uptime_sec <  options[:warning]
+		code = 1
+	  else
+        code = 0
+	  end
+
+	  puts "UPTIME #{RETURN_CODES[code]} #{uptime_sec}s | uptime=#{uptime_sec}"
+	  exit code
+	rescue => e
+	  exit_with_failure(e)
+	end
+  end
+
   desc "active_ftp", "make sure conntrack_ftp and nf_nat_ftp modules are loaded"
   def active_ftp
     begin
