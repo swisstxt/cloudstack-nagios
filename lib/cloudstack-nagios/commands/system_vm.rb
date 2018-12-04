@@ -197,7 +197,7 @@ class SystemVm < CloudstackNagios::Base
         code = 0
 	  end
 
-	  puts "UPTIME #{RETURN_CODES[code]} #{uptime_sec}s (#{options[:critical]}, #{options[:warning]})| uptime=#{uptime_sec}"
+	  puts "UPTIME #{RETURN_CODES[code]} #{uptime_sec}s (#{options[:critical]}, #{options[:warning]}) | uptime=#{uptime_sec}"
 	  exit code
 	rescue => e
 	  exit_with_failure(e)
