@@ -24,8 +24,8 @@ Gem::Specification.new do |gem|
   gem.add_development_dependency('rake', '~> 12.0')
 
   gem.add_dependency('cloudstack_client', '~> 1.5')
-  gem.add_dependency('thor', '~> 0.19.4')
+  gem.add_dependency('thor', '~> 0.20.0')
   gem.add_dependency('erubis', '~> 2.7')
-  gem.add_dependency('sshkit', '~> 1.14.0')
-  gem.add_dependency('highline', '~> 1.7')
+  gem.add_dependency('sshkit', '~> 1.18.0')
+  gem.add_dependency('highline', '~> 2.0')
 end
