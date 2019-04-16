@@ -6,7 +6,7 @@ require 'cloudstack-nagios/version'
 Gem::Specification.new do |gem|
   gem.name          = "cloudstack-nagios"
   gem.version       = CloudstackNagios::VERSION
-  gem.authors       = ["Nik Wolfgramm", "Martin Kolly"]
+  gem.authors       = ["Nik Wolfgramm", "Martin Kolly", "René Moser", "Matthias Hänni", "Michael Pospiezsynski"]
   gem.email         = ["nik.wolfgramm@gmail.com"]
   gem.description   = %q{cloudstack-nagios generates nagios configuration and checks for monitoring CloudStack with nagios.}
   gem.summary       = %q{cloudstack-nagios CloudStack monitoring tools for nagios}
@@ -24,8 +24,8 @@ Gem::Specification.new do |gem|
   gem.add_development_dependency('rake', '~> 12.0')
 
   gem.add_dependency('cloudstack_client', '~> 1.5')
-  gem.add_dependency('thor', '~> 0.19.4')
+  gem.add_dependency('thor', '~> 0.20.0')
   gem.add_dependency('erubis', '~> 2.7')
-  gem.add_dependency('sshkit', '~> 1.14.0')
-  gem.add_dependency('highline', '~> 1.7')
+  gem.add_dependency('sshkit', '~> 1.18.0')
+  gem.add_dependency('highline', '~> 2.0')
 end
